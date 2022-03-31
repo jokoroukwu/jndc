@@ -1,0 +1,12 @@
+#Gradle related
+.gradle/
+**/build
+**/out
+**/allure-results
+.allure
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
