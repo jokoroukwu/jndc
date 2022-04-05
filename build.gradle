@@ -1,0 +1,50 @@
+plugins {
+    id "maven-publish"
+    id "java"
+}
+group "io.github.jokoroukwu"
+version "0.1.0"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    testImplementation "org.testng:testng:7.1.0"
+    testImplementation "org.mockito:mockito-core:4.1.0"
+    testImplementation "org.assertj:assertj-core:3.18.1"
+}
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+    options.compilerArgs += "-parameters"
+    options.encoding = "UTF-8"
+    javadoc.options.encoding = "UTF-8"
+}
+compileTestJava {
+    options.encoding = "UTF-8"
+    javadoc.options.encoding = "UTF-8"
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+javadoc {
+    options.encoding = "UTF-8"
+}
+
+test {
+    useTestNG()
+    testLogging {
+        events "PASSED", "SKIPPED", "FAILED"
+        showExceptions true
+        exceptionFormat "FULL"
+        showCauses true
+        showStackTraces true
+        showStandardStreams = true
+    }
+}
+
