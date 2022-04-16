@@ -1,10 +1,10 @@
 package io.github.jokoroukwu.jndc.central.transactionreply.printerdata;
 
 import io.github.jokoroukwu.jndc.NdcComponent;
-import io.github.jokoroukwu.jndc.collection.LimitedSizeList;
 import io.github.jokoroukwu.jndc.util.ArrayUtils;
 import io.github.jokoroukwu.jndc.util.NdcConstants;
 import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
+import io.github.jokoroukwu.jndc.util.collection.LimitedSizeList;
 import io.github.jokoroukwu.jndc.util.text.Strings;
 
 import java.util.ArrayList;

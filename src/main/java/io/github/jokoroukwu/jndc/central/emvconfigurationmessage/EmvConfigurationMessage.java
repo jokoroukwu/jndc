@@ -2,8 +2,8 @@ package io.github.jokoroukwu.jndc.central.emvconfigurationmessage;
 
 import io.github.jokoroukwu.jndc.Luno;
 import io.github.jokoroukwu.jndc.ResponseFlag;
+import io.github.jokoroukwu.jndc.central.CentralMessage;
 import io.github.jokoroukwu.jndc.central.CentralMessageClass;
-import io.github.jokoroukwu.jndc.central.CentralOriginatedMessage;
 import io.github.jokoroukwu.jndc.central.emvconfigurationmessage.configdata.ConfigurationData;
 import io.github.jokoroukwu.jndc.mac.MacReaderBase;
 import io.github.jokoroukwu.jndc.util.NdcConstants;
@@ -14,16 +14,14 @@ import java.util.Objects;
 import java.util.OptionalInt;
 import java.util.StringJoiner;
 
-public class EmvConfigurationMessage<V extends ConfigurationData> extends CentralOriginatedMessage {
+public class EmvConfigurationMessage<V extends ConfigurationData> implements CentralMessage {
     public static final String COMMAND_NAME = CentralMessageClass.EMV_CONFIGURATION.toString();
-
     protected final char responseFlag;
     protected final Luno luno;
     protected final String mac;
     private final V configurationData;
 
     protected EmvConfigurationMessage(char responseFlag, Luno luno, V configurationData, String mac) {
-        super(CentralMessageClass.EMV_CONFIGURATION);
         this.responseFlag = ResponseFlag.validateResponseFlag(responseFlag);
         this.luno = ObjectUtils.validateNotNull(luno, "LUNO");
         this.configurationData = ObjectUtils.validateNotNull(configurationData, "'Configuration Data'");
@@ -60,10 +58,15 @@ public class EmvConfigurationMessage<V extends ConfigurationData> extends Centra
     }
 
     @Override
+    public CentralMessageClass getMessageClass() {
+        return CentralMessageClass.EMV_CONFIGURATION;
+    }
+
+    @Override
     public final String toNdcString() {
         final String configDataString = configurationData.toNdcString();
         return new NdcStringBuilder(16 + configDataString.length() + mac.length())
-                .appendComponent(messageClass)
+                .appendComponent(CentralMessageClass.EMV_CONFIGURATION)
                 .append(responseFlag)
                 .appendFs()
                 .appendComponent(luno)
@@ -77,7 +80,7 @@ public class EmvConfigurationMessage<V extends ConfigurationData> extends Centra
     @Override
     public String toString() {
         return new StringJoiner(", ", EmvConfigurationMessage.class.getSimpleName() + ": {", "}")
-                .add("messageClass: " + messageClass)
+                .add("messageClass: " + CentralMessageClass.EMV_CONFIGURATION)
                 .add("responseFlag: '" + responseFlag + "'")
                 .add("luno: " + luno)
                 .add("configurationData: " + configurationData)
@@ -98,7 +101,6 @@ public class EmvConfigurationMessage<V extends ConfigurationData> extends Centra
 
     @Override
     public int hashCode() {
-        return Objects.hash(messageClass, responseFlag, luno, configurationData, mac);
+        return Objects.hash(CentralMessageClass.EMV_CONFIGURATION, responseFlag, luno, configurationData, mac);
     }
-
 }

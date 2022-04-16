@@ -2,8 +2,8 @@ package io.github.jokoroukwu.jndc.central.emvconfigurationmessage.configdata.cur
 
 import io.github.jokoroukwu.jndc.central.emvconfigurationmessage.EmvConfigMessageSubClass;
 import io.github.jokoroukwu.jndc.central.emvconfigurationmessage.configdata.ConfigurationData;
-import io.github.jokoroukwu.jndc.collection.LimitedSizeList;
 import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
+import io.github.jokoroukwu.jndc.util.collection.LimitedSizeList;
 
 import java.util.Arrays;
 import java.util.Collection;

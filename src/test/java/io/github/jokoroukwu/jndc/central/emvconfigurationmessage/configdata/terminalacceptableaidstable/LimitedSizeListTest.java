@@ -1,6 +1,6 @@
 package io.github.jokoroukwu.jndc.central.emvconfigurationmessage.configdata.terminalacceptableaidstable;
 
-import io.github.jokoroukwu.jndc.collection.LimitedSizeList;
+import io.github.jokoroukwu.jndc.util.collection.LimitedSizeList;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 

@@ -3,8 +3,8 @@ package io.github.jokoroukwu.jndc.central.emvconfigurationmessage.configdata.lan
 import io.github.jokoroukwu.jndc.central.emvconfigurationmessage.EmvConfigMessageSubClass;
 import io.github.jokoroukwu.jndc.central.emvconfigurationmessage.EmvConfigurationMessage;
 import io.github.jokoroukwu.jndc.central.emvconfigurationmessage.configdata.ConfigurationData;
-import io.github.jokoroukwu.jndc.collection.LimitedSizeList;
 import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
+import io.github.jokoroukwu.jndc.util.collection.LimitedSizeList;
 
 import java.util.Collection;
 import java.util.Collections;
