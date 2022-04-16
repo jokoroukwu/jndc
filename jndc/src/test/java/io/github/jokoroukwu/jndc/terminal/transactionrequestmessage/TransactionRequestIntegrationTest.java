@@ -41,8 +41,8 @@ public class TransactionRequestIntegrationTest implements DeviceConfigurationSup
     }
 
     @Override
-    public void onTransactionRequestMessage(TransactionRequestMessage transactionRequestMessage) {
-        this.transactionRequestMessage = transactionRequestMessage;
+    public void onTransactionRequestMessage(TransactionRequestMessage message) {
+        this.transactionRequestMessage = message;
     }
 
     @DataProvider

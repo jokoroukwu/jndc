@@ -1,3 +1,4 @@
-rootProject.name = "jndc"
-
+rootProject.name = "jndc-root"
+include "examples"
+include "jndc"
 

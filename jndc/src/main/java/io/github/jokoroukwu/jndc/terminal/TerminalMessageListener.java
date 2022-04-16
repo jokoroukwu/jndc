@@ -33,56 +33,56 @@ public interface TerminalMessageListener extends TransactionRequestMessageListen
         SolicitedGenericDeviceFaultMessageListener, SolicitedCardReaderWriterFaultMessageListener {
 
     @Override
-    default void onTransactionRequestMessage(TransactionRequestMessage transactionRequestMessage) {
+    default void onTransactionRequestMessage(TransactionRequestMessage message) {
     }
 
     @Override
-    default void onReadyBStatusMessage(SolicitedStatusMessage<ReadyBStatus> readyBStatusMessage) {
-
-    }
-
-    @Override
-    default void onSolicitedCardReaderWriterFaultMessage(SolicitedStatusMessage<CardReaderWriterFault> deviceFaultMessage) {
+    default void onReadyBStatusMessage(SolicitedStatusMessage<ReadyBStatus> message) {
 
     }
 
     @Override
-    default void onSolicitedGenericStatusMessage(SolicitedStatusMessage<GenericSolicitedStatusInformation> genericStatusMessage) {
+    default void onSolicitedCardReaderWriterFaultMessage(SolicitedStatusMessage<CardReaderWriterFault> message) {
 
     }
 
     @Override
-    default void onCommandRejectStatusMessage(SolicitedStatusMessage<SolicitedStatusInformation> commandRejectMessage) {
+    default void onSolicitedGenericStatusMessage(SolicitedStatusMessage<GenericSolicitedStatusInformation> message) {
 
     }
 
     @Override
-    default void onReadyStatusMessage(SolicitedStatusMessage<SolicitedStatusInformation> commandRejectMessage) {
+    default void onCommandRejectStatusMessage(SolicitedStatusMessage<SolicitedStatusInformation> message) {
 
     }
 
     @Override
-    default void onNewKeyVerificationValueMessage(EncryptorInitialisationData<NewKvv> kvvMessage) {
+    default void onReadyStatusMessage(SolicitedStatusMessage<SolicitedStatusInformation> message) {
 
     }
 
     @Override
-    default void onGenericEncryptorDataMessage(EncryptorInitialisationData<GenericEncryptorInformation> genericEncryptorDataMessage) {
+    default void onNewKeyVerificationValueMessage(EncryptorInitialisationData<NewKvv> message) {
 
     }
 
     @Override
-    default void onSolicitedGenericDeviceFaultMessage(SolicitedStatusMessage<GenericDeviceFault> genericDeviceFaultMessage) {
+    default void onGenericEncryptorDataMessage(EncryptorInitialisationData<GenericEncryptorInformation> message) {
 
     }
 
     @Override
-    default void onUnsolicitedGenericDeviceFaultMessage(UnsolicitedStatusMessage<GenericDeviceFault> unsolicitedStatusMessage) {
+    default void onSolicitedGenericDeviceFaultMessage(SolicitedStatusMessage<GenericDeviceFault> message) {
 
     }
 
     @Override
-    default void onUnsolicitedCardReaderWriterStatusMessage(UnsolicitedStatusMessage<CardReaderWriterFault> deviceFaultMessage) {
+    default void onUnsolicitedGenericDeviceFaultMessage(UnsolicitedStatusMessage<GenericDeviceFault> message) {
+
+    }
+
+    @Override
+    default void onUnsolicitedCardReaderWriterStatusMessage(UnsolicitedStatusMessage<CardReaderWriterFault> message) {
 
     }
 
@@ -92,7 +92,7 @@ public interface TerminalMessageListener extends TransactionRequestMessageListen
     }
 
     @Override
-    default void onSupplyCountersExtendedMessage(SolicitedStatusMessage<SupplyCountersExtended> supplyCountersExtendedMessage) {
+    default void onSupplyCountersExtendedMessage(SolicitedStatusMessage<SupplyCountersExtended> message) {
 
     }
 }
