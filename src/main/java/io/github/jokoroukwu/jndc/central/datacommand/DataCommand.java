@@ -3,8 +3,8 @@ package io.github.jokoroukwu.jndc.central.datacommand;
 import io.github.jokoroukwu.jndc.Luno;
 import io.github.jokoroukwu.jndc.NdcComponent;
 import io.github.jokoroukwu.jndc.ResponseFlag;
+import io.github.jokoroukwu.jndc.central.CentralMessage;
 import io.github.jokoroukwu.jndc.central.CentralMessageClass;
-import io.github.jokoroukwu.jndc.central.CentralOriginatedMessage;
 import io.github.jokoroukwu.jndc.util.Integers;
 import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
 import io.github.jokoroukwu.jndc.util.ObjectUtils;
@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.OptionalLong;
 import java.util.StringJoiner;
 
-public class DataCommand<V extends NdcComponent> extends CentralOriginatedMessage {
+public class DataCommand<V extends NdcComponent> implements CentralMessage {
     private final DataCommandSubClass messageSubclass;
     private final char responseFlag;
     private final Luno luno;
@@ -21,7 +21,6 @@ public class DataCommand<V extends NdcComponent> extends CentralOriginatedMessag
     private final V commandData;
 
     public DataCommand(char responseFlag, Luno luno, int messageSequenceNumber, DataCommandSubClass messageSubclass, V commandData) {
-        super(CentralMessageClass.DATA_COMMAND);
         this.messageSubclass = ObjectUtils.validateNotNull(messageSubclass, "messageSubclass");
         this.luno = ObjectUtils.validateNotNull(luno, "luno");
         this.commandData = ObjectUtils.validateNotNull(commandData, "commandData");
@@ -63,9 +62,14 @@ public class DataCommand<V extends NdcComponent> extends CentralOriginatedMessag
     }
 
     @Override
+    public CentralMessageClass getMessageClass() {
+        return CentralMessageClass.DATA_COMMAND;
+    }
+
+    @Override
     public String toString() {
         return new StringJoiner(", ", DataCommand.class.getSimpleName() + ": {", "}")
-                .add("messageClass: '" + messageClass + "'")
+                .add("messageClass: '" + CentralMessageClass.DATA_COMMAND + "'")
                 .add("messageSubclass: '" + messageSubclass + "'")
                 .add("responseFlag: '" + responseFlag + "'")
                 .add("LUNO: " + luno)
@@ -78,7 +82,7 @@ public class DataCommand<V extends NdcComponent> extends CentralOriginatedMessag
     public String toNdcString() {
         final NdcStringBuilder builder = new NdcStringBuilder(13);
         return builder
-                .appendComponent(messageClass)
+                .appendComponent(CentralMessageClass.DATA_COMMAND)
                 .append(responseFlag)
                 .appendFs()
                 .appendComponent(luno)
@@ -96,7 +100,6 @@ public class DataCommand<V extends NdcComponent> extends CentralOriginatedMessag
         if (o == null || getClass() != o.getClass()) return false;
         DataCommand<?> that = (DataCommand<?>) o;
         return ((messageSequenceNumber < 0 && that.messageSequenceNumber < 0) || messageSequenceNumber == that.messageSequenceNumber) &&
-                messageClass == that.messageClass &&
                 responseFlag == that.responseFlag &&
                 messageSubclass == that.messageSubclass &&
                 luno.equals(that.luno) &&
@@ -105,8 +108,7 @@ public class DataCommand<V extends NdcComponent> extends CentralOriginatedMessag
 
     @Override
     public int hashCode() {
-        return Objects.hash(messageClass, messageSubclass, responseFlag, luno, Math.max(messageSequenceNumber, -1),
-                commandData);
+        return Objects.hash(CentralMessageClass.DATA_COMMAND, messageSubclass, responseFlag, luno,
+                Math.max(messageSequenceNumber, -1), commandData);
     }
-
 }

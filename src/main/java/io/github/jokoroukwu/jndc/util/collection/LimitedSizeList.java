@@ -1,4 +1,4 @@
-package io.github.jokoroukwu.jndc.collection;
+package io.github.jokoroukwu.jndc.util.collection;
 
 import io.github.jokoroukwu.jndc.util.Integers;
 import io.github.jokoroukwu.jndc.util.ObjectUtils;

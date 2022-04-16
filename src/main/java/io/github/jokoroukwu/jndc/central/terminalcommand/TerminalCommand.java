@@ -2,8 +2,8 @@ package io.github.jokoroukwu.jndc.central.terminalcommand;
 
 import io.github.jokoroukwu.jndc.Luno;
 import io.github.jokoroukwu.jndc.ResponseFlag;
+import io.github.jokoroukwu.jndc.central.CentralMessage;
 import io.github.jokoroukwu.jndc.central.CentralMessageClass;
-import io.github.jokoroukwu.jndc.central.CentralOriginatedMessage;
 import io.github.jokoroukwu.jndc.central.terminalcommand.commandcode.CommandCode;
 import io.github.jokoroukwu.jndc.central.terminalcommand.commandcode.CommandModifier;
 import io.github.jokoroukwu.jndc.util.NdcConstants;
@@ -12,7 +12,7 @@ import io.github.jokoroukwu.jndc.util.ObjectUtils;
 
 import java.util.*;
 
-public class TerminalCommand extends CentralOriginatedMessage {
+public class TerminalCommand implements CentralMessage {
     public static final String COMMAND_NAME = "Terminal Command";
     private final char responseFlag;
     private final Luno luno;
@@ -21,7 +21,6 @@ public class TerminalCommand extends CentralOriginatedMessage {
     private final CommandModifier commandModifier;
 
     public TerminalCommand(char responseFlag, Luno luno, long messageSequenceNumber, CommandCode commandCode, CommandModifier commandModifier) {
-        super(CentralMessageClass.TERMINAL_COMMAND);
         this.luno = ObjectUtils.validateNotNull(luno, "'LUNO'");
         this.commandCode = ObjectUtils.validateNotNull(commandCode, "'Command code'");
         this.responseFlag = ResponseFlag.validateResponseFlag(responseFlag);
@@ -63,9 +62,14 @@ public class TerminalCommand extends CentralOriginatedMessage {
     }
 
     @Override
+    public CentralMessageClass getMessageClass() {
+        return CentralMessageClass.TERMINAL_COMMAND;
+    }
+
+    @Override
     public String toNdcString() {
         return new NdcStringBuilder()
-                .appendComponent(messageClass)
+                .appendComponent(CentralMessageClass.TERMINAL_COMMAND)
                 .append(responseFlag)
                 .appendFs()
                 .appendComponent(luno)
@@ -80,7 +84,7 @@ public class TerminalCommand extends CentralOriginatedMessage {
     @Override
     public String toString() {
         return new StringJoiner(", ", TerminalCommand.class.getSimpleName() + ": {", "}")
-                .add("messageClass: " + messageClass)
+                .add("messageClass: " + CentralMessageClass.TERMINAL_COMMAND)
                 .add("responseFlag: '" + responseFlag + "'")
                 .add("LUNO: " + luno)
                 .add("messageSequenceNumber: '" + messageSequenceNumber + "'")
@@ -96,7 +100,6 @@ public class TerminalCommand extends CentralOriginatedMessage {
         TerminalCommand that = (TerminalCommand) o;
         return ((messageSequenceNumber < 0 && that.messageSequenceNumber < 0) || messageSequenceNumber == that.messageSequenceNumber) &&
                 responseFlag == that.responseFlag &&
-                messageClass == that.messageClass &&
                 commandCode == that.commandCode &&
                 commandModifier == that.commandModifier &&
                 luno.equals(that.luno);
@@ -104,8 +107,7 @@ public class TerminalCommand extends CentralOriginatedMessage {
 
     @Override
     public int hashCode() {
-        return Objects.hash(messageClass, responseFlag, luno, Math.max(messageSequenceNumber, -1), commandCode,
-                commandModifier);
+        return Objects.hash(CentralMessageClass.TERMINAL_COMMAND, responseFlag, luno,
+                Math.max(messageSequenceNumber, -1), commandCode, commandModifier);
     }
-
 }

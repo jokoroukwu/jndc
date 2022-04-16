@@ -1,8 +1,8 @@
 package io.github.jokoroukwu.jndc.terminal.statusmessage.solicited.terminalstate.supplycountersextended.coindispensergroup;
 
-import io.github.jokoroukwu.jndc.collection.LimitedSizeList;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.solicited.terminalstate.supplycountersextended.IdentifiableCounterGroup;
 import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
+import io.github.jokoroukwu.jndc.util.collection.LimitedSizeList;
 
 import java.util.Collection;
 import java.util.Collections;

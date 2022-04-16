@@ -2,8 +2,8 @@ package io.github.jokoroukwu.jndc.central.transactionreply;
 
 import io.github.jokoroukwu.jndc.Luno;
 import io.github.jokoroukwu.jndc.ResponseFlag;
+import io.github.jokoroukwu.jndc.central.CentralMessage;
 import io.github.jokoroukwu.jndc.central.CentralMessageClass;
-import io.github.jokoroukwu.jndc.central.CentralOriginatedMessage;
 import io.github.jokoroukwu.jndc.central.transactionreply.cardflag.CardFlag;
 import io.github.jokoroukwu.jndc.central.transactionreply.chequedestination.ChequeDestinationBuffer;
 import io.github.jokoroukwu.jndc.central.transactionreply.coinstodispense.CoinsToDispense;
@@ -29,7 +29,7 @@ import io.github.jokoroukwu.jndc.util.text.Strings;
 
 import java.util.*;
 
-public class TransactionReplyCommand extends CentralOriginatedMessage {
+public class TransactionReplyCommand implements CentralMessage {
     protected final char responseFlag;
     protected final Luno luno;
     protected final SequenceTimeVariantNumber sequenceTimeVariantNumber;
@@ -77,8 +77,6 @@ public class TransactionReplyCommand extends CentralOriginatedMessage {
                                    GenericBuffer bufferS,
                                    Map<Character, IdentifiableBuffer> exitsBufferMap,
                                    String mac) {
-        super(CentralMessageClass.TRANSACTION_REPLY_COMMAND);
-
         this.responseFlag = ResponseFlag.validateResponseFlag(responseFlag);
         this.luno = ObjectUtils.validateNotNull(luno, "LUNO");
         this.functionId = ObjectUtils.validateNotNull(functionId, "Function ID");
@@ -228,11 +226,16 @@ public class TransactionReplyCommand extends CentralOriginatedMessage {
     }
 
     @Override
+    public CentralMessageClass getMessageClass() {
+        return CentralMessageClass.TRANSACTION_REPLY_COMMAND;
+    }
+
+    @Override
     public String toNdcString() {
         //  some fields contain huge chunks of data
         //  so enough space should be allocated
         return new NdcStringBuilder(512)
-                .appendComponent(messageClass)
+                .appendComponent(CentralMessageClass.TRANSACTION_REPLY_COMMAND)
                 .append(responseFlag)
                 .appendFs()
                 .appendComponent(luno)
@@ -273,7 +276,7 @@ public class TransactionReplyCommand extends CentralOriginatedMessage {
     @Override
     public String toString() {
         return new StringJoiner(", ", TransactionReplyCommand.class.getSimpleName() + ": {", "}")
-                .add("messageClass: " + messageClass)
+                .add("messageClass: " + CentralMessageClass.TRANSACTION_REPLY_COMMAND)
                 .add("responseFlag: " + responseFlag)
                 .add("LUNO: " + luno)
                 .add("sequenceTimeVariantNumber: " + sequenceTimeVariantNumber)
@@ -331,7 +334,8 @@ public class TransactionReplyCommand extends CentralOriginatedMessage {
 
     @Override
     public int hashCode() {
-        return Objects.hash(responseFlag, luno, sequenceTimeVariantNumber, nextStateIdData, notesToDispense,
+        return Objects.hash(CentralMessageClass.TRANSACTION_REPLY_COMMAND,
+                responseFlag, luno, sequenceTimeVariantNumber, nextStateIdData, notesToDispense,
                 coinsToDispense, transactionSerialNumber, functionId, screenDisplayUpdate,
                 messageCoordinationNumber, cardFlag, printerDataList, track3DataBuffer, track1DataBuffer, track2DataBuffer,
                 smartCardBuffer, chequeDestinationBuffer, multiChequeBuffer, transactionUpdateBuffer, depositLimitsBuffer,

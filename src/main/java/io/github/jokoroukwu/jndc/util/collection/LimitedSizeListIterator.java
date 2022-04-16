@@ -1,4 +1,4 @@
-package io.github.jokoroukwu.jndc.collection;
+package io.github.jokoroukwu.jndc.util.collection;
 
 import java.util.ListIterator;
 import java.util.function.Consumer;
