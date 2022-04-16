@@ -132,6 +132,13 @@ public final class Strings {
         return isWithinCharRange(value, beginOffset, value.length(), min, max);
     }
 
+    public static String validateIsDecimal(String value, String fieldName) {
+        if (isDecimal(ObjectUtils.validateNotNull(value, fieldName))) {
+            return value;
+        }
+        throw new IllegalArgumentException(String.format("%s should be decimal but was: '%s'", fieldName, value));
+    }
+
     public static boolean isDecimal(String value) {
         return isDecimal(value, 0, value.length());
     }

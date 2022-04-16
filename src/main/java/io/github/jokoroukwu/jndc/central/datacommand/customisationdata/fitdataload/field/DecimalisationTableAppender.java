@@ -4,11 +4,10 @@ import io.github.jokoroukwu.jndc.ChainedNdcComponentAppender;
 import io.github.jokoroukwu.jndc.NdcCharBuffer;
 import io.github.jokoroukwu.jndc.NdcComponentAppender;
 import io.github.jokoroukwu.jndc.central.datacommand.customisationdata.fitdataload.FitBuilder;
-import io.github.jokoroukwu.jndc.util.ByteUtils;
-import io.github.jokoroukwu.jndc.util.Integers;
+import io.github.jokoroukwu.jndc.central.datacommand.customisationdata.fitdataload.Fits;
 
 import static io.github.jokoroukwu.jndc.central.datacommand.customisationdata.fitdataload.FitDataLoadCommand.COMMAND_NAME;
-import static io.github.jokoroukwu.jndc.exception.NdcMessageParseException.onFieldParseError;
+import static io.github.jokoroukwu.jndc.exception.NdcMessageParseException.withMessage;
 
 public class DecimalisationTableAppender extends ChainedNdcComponentAppender<FitBuilder> {
     public static final String FIELD_NAME = "PDCTB (Decimalisation Table)";
@@ -24,17 +23,35 @@ public class DecimalisationTableAppender extends ChainedNdcComponentAppender<Fit
 
     @Override
     public void appendComponent(NdcCharBuffer ndcCharBuffer, FitBuilder stateObject) {
-        final StringBuilder builder = new StringBuilder(16);
+        long value = 0;
         for (int i = 0; i < 8; i++) {
-            ndcCharBuffer.tryReadInt(3)
-                    .filter(ByteUtils::isWithinUnsignedRange, val -> ()
-                            -> String.format("each digit should be in range 0x00-0xFF but found 0x%X at position %d", val,
-                            ndcCharBuffer.position() - 3))
-                    .mapToObject(Integers::toEvenLengthHexString)
-                    .resolve(builder::append,
-                            errorMessage -> onFieldParseError(COMMAND_NAME, FIELD_NAME, errorMessage, ndcCharBuffer));
+            final int nextDigitPair = ndcCharBuffer.tryReadInt(3)
+                    .filter(val -> Fits.isDigitPairValid(val, 0, 9), val -> ()
+                            -> String.format("each digit pair should be in range 0x00-0x99 but found 0x%X at position %d",
+                            val, ndcCharBuffer.position() - 3))
+                    .getOrThrow(errorMessage -> withMessage(COMMAND_NAME, FIELD_NAME, errorMessage, ndcCharBuffer));
+            value = (value << Byte.SIZE) | nextDigitPair;
         }
-        stateObject.withDecimalisationTable(builder.toString());
+        stateObject.withDecimalisationTable(value);
         callNextAppender(ndcCharBuffer, stateObject);
+    }
+
+    public static boolean isValid(long value) {
+        return Fits.isDigitPairValid((int) (value >> 56), 0, 9) &&
+                Fits.isDigitPairValid((int) ((value >> 48) & 0x00_FF), 0, 9) &&
+                Fits.isDigitPairValid((int) ((value >> 40) & 0x00_00_FF), 0, 9) &&
+                Fits.isDigitPairValid((int) ((value >> 32) & 0x00_00_00_FF), 0, 9) &&
+                Fits.isDigitPairValid((int) ((value >> 24) & 0x00_00_00_00_FF), 0, 9) &&
+                Fits.isDigitPairValid((int) ((value >> 16) & 0x00_00_00_00_00_FF), 0, 9) &&
+                Fits.isDigitPairValid((int) ((value >> 8) & 0x00_00_00_00_00_00_FF), 0, 9) &&
+                Fits.isDigitPairValid((int) (value & 0x00_00_00_00_00_00_00_FF), 0, 9);
+    }
+
+    public static long validateDecimalisationTable(long value) {
+        if (isValid(value)) {
+            return value;
+        }
+        final String errorMessage = "Each '%s' digit should be in range 0x00-0x09 but actual value was 0x%X";
+        throw new IllegalArgumentException(String.format(errorMessage, FIELD_NAME, value));
     }
 }

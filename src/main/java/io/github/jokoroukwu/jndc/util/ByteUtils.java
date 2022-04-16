@@ -2,6 +2,8 @@ package io.github.jokoroukwu.jndc.util;
 
 
 public final class ByteUtils {
+    public static final int MAX_UNSIGNED_VALUE = 255;
+    public static final int MIN_UNSIGNED_VALUE = 0;
 
     private ByteUtils() {
         throw new InstantiationError(getClass() + " is for static use only");
@@ -9,7 +11,7 @@ public final class ByteUtils {
 
 
     public static boolean isWithinUnsignedRange(int value) {
-        return value >= 0 && value <= 0xFF;
+        return value >= MIN_UNSIGNED_VALUE && value <= MAX_UNSIGNED_VALUE;
     }
 
     public static int validateIsWithinUnsignedRange(int value, String fieldName) {

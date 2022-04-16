@@ -1,10 +1,26 @@
 package io.github.jokoroukwu.jndc.util;
 
 
-
 public final class ArrayUtils {
     private ArrayUtils() {
         throw new InstantiationError(getClass() + " is for static use only");
+    }
+
+    public static byte[] validateLength(byte[] bytes, int expectedLength, String fieldName) {
+        if (ObjectUtils.validateNotNull(bytes, fieldName).length == expectedLength) {
+            return bytes;
+        }
+        throw new IllegalArgumentException(String.format("%s length should be %d but was %d", fieldName, expectedLength,
+                bytes.length));
+    }
+
+    public static String toDecimalString(byte[] bytes) {
+        ObjectUtils.validateNotNull(bytes, "Byte array");
+        final StringBuilder builder = new StringBuilder(bytes.length * 3);
+        for (byte aByte : bytes) {
+            builder.append(Integers.toZeroPaddedString(aByte & 0xFF, 3));
+        }
+        return builder.toString();
     }
 
     public static boolean isEmpty(Object[] array) {

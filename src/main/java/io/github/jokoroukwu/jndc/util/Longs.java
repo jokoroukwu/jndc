@@ -64,6 +64,20 @@ public final class Longs {
         }
     }
 
+    public static DescriptiveOptionalLong tryParseUnsignedLong(String value, int radix) {
+        ObjectUtils.validateNotNull(value, "value");
+        try {
+            return DescriptiveOptionalLong.of(Long.parseUnsignedLong(value, radix));
+        } catch (NumberFormatException e) {
+            return DescriptiveOptionalLong.empty(e::toString);
+        }
+    }
+
+    public static DescriptiveOptionalLong tryParseUnsignedHexLong(String value) {
+        return tryParseUnsignedLong(value, 16);
+    }
+
+
     public static DescriptiveOptionalLong tryParseLong(String value) {
         return tryParseLong(value, 10);
     }
