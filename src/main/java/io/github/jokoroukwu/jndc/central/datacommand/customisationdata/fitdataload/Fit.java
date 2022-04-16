@@ -6,12 +6,9 @@ import io.github.jokoroukwu.jndc.central.datacommand.customisationdata.fitdatalo
 import io.github.jokoroukwu.jndc.central.datacommand.customisationdata.fitdataload.field.pckln.MaxPinDigitsCheckedAppender;
 import io.github.jokoroukwu.jndc.central.datacommand.customisationdata.fitdataload.field.pmxpn.MaxPinDigitsEntered;
 import io.github.jokoroukwu.jndc.central.datacommand.customisationdata.fitdataload.field.pmxpn.MaxPinDigitsEnteredAppender;
-import io.github.jokoroukwu.jndc.util.ByteUtils;
-import io.github.jokoroukwu.jndc.util.Integers;
-import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
-import io.github.jokoroukwu.jndc.util.ObjectUtils;
-import io.github.jokoroukwu.jndc.util.text.Strings;
+import io.github.jokoroukwu.jndc.util.*;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -31,8 +28,8 @@ public class Fit implements NdcComponent {
     private final int panPad;
     private final int track3PinRetryCount;
     private final int pinOffsetIndex;
-    private final String decimalisationTable;
-    private final String encryptedPinKey;
+    private final long decimalisationTable;
+    private final byte[] encryptedPinKey;
     private final int indexReferencePoint;
     private final int languageCodeIndex;
     private final int cimSensorFlag;
@@ -52,8 +49,8 @@ public class Fit implements NdcComponent {
                int panPad,
                int track3PinRetryCount,
                int pinOffsetIndex,
-               String decimalisationTable,
-               String encryptedPinKey,
+               long decimalisationTable,
+               byte[] encryptedPinKey,
                int indexReferencePoint,
                int languageCodeIndex,
                int cimSensorFlag,
@@ -76,10 +73,8 @@ public class Fit implements NdcComponent {
         this.track3PinRetryCount = Track3PinAppender.validateTrack3PinRetryCount(track3PinRetryCount);
         this.pinOffsetIndex = Integers.validateHexRangeOrExactValue(pinOffsetIndex, 0, 0x7F, 0xFF,
                 PinOffsetDataAppender.FIELD_NAME);
-        this.decimalisationTable = Strings.validateIsHex(Strings.validateLength(decimalisationTable, 16,
-                DecimalisationTableAppender.FIELD_NAME), DecimalisationTableAppender.FIELD_NAME);
-        this.encryptedPinKey = Strings.validateIsHex(Strings.validateLength(encryptedPinKey, 16,
-                EncryptedPinKeyAppender.FIELD_NAME), EncryptedPinKeyAppender.FIELD_NAME);
+        this.decimalisationTable = DecimalisationTableAppender.validateDecimalisationTable(decimalisationTable);
+        this.encryptedPinKey = ArrayUtils.validateLength(encryptedPinKey, 8, EncryptedPinKeyAppender.FIELD_NAME);
         this.indexReferencePoint = IndexReferencePointAppender.validateValue(indexReferencePoint);
         this.languageCodeIndex = Integers.validateHexRange(languageCodeIndex, 0x00, 0x7F,
                 LanguageCodeIndexAppender.FIELD_NAME);
@@ -101,8 +96,8 @@ public class Fit implements NdcComponent {
         int panPad,
         int track3PinRetryCount,
         int pinOffsetIndex,
-        String decimalisationTable,
-        String encryptedPinKey,
+        long decimalisationTable,
+        byte[] encryptedPinKey,
         int indexReferencePoint,
         int languageCodeIndex,
         int cimSensorFlag,
@@ -188,12 +183,12 @@ public class Fit implements NdcComponent {
         return pinOffsetIndex;
     }
 
-    public String getDecimalisationTable() {
+    public long getDecimalisationTable() {
         return decimalisationTable;
     }
 
-    public String getEncryptedPinKey() {
-        return encryptedPinKey;
+    public byte[] getEncryptedPinKey() {
+        return encryptedPinKey.clone();
     }
 
     public int getIndexReferencePoint() {
@@ -222,7 +217,7 @@ public class Fit implements NdcComponent {
         return builder
                 .appendZeroPadded(fitNumber, 3)
                 .appendZeroPadded(institutionIndex, 3)
-                .append(toThreeDigitDecimalString(institutionId, 5))
+                .append(Fits.toThreeDigitDecimalString(institutionId, 5))
                 .appendZeroPadded(indirectNextStateIndex, 3)
                 .appendZeroPadded(algorithmOrBankId, 3)
                 .appendComponent(maxPinDigitsEntered)
@@ -233,64 +228,39 @@ public class Fit implements NdcComponent {
                 .appendZeroPadded(panPad, 3)
                 .appendZeroPadded(track3PinRetryCount, 3)
                 .appendZeroPadded(pinOffsetIndex, 3)
-                .append(toThreeDigitDecimalString(decimalisationTable))
-                .append(toThreeDigitDecimalString(encryptedPinKey))
-                .append(toThreeDigitDecimalString(indexReferencePoint, 3))
+                .append(Fits.toThreeDigitDecimalString(decimalisationTable, Long.BYTES))
+                .append(ArrayUtils.toDecimalString(encryptedPinKey))
+                .append(Fits.toThreeDigitDecimalString(indexReferencePoint, 3))
                 .appendZeroPadded(languageCodeIndex, 3)
                 .appendZeroPadded(cimSensorFlag, 3)
-                .append(toThreeDigitDecimalString(reservedField, 3))
+                .append(Fits.toThreeDigitDecimalString(reservedField, 3))
                 .appendZeroPadded(pinBlockFormat, 3)
                 .toString();
-    }
-
-    private CharSequence toThreeDigitDecimalString(long value, int numberOfBytes) {
-        final NdcStringBuilder builder = new NdcStringBuilder(numberOfBytes * 3);
-        long mask = 0xFFL;
-        for (int i = numberOfBytes - 1; i >= 0; i--) {
-            final int bitsShifted = i * Byte.SIZE;
-            final int nextByte = (int) ((value >> bitsShifted) & mask);
-            builder.appendZeroPadded(nextByte, 3);
-        }
-        return builder;
-    }
-
-    public CharSequence toThreeDigitDecimalString(String hexString) {
-        var builder = new StringBuilder(hexString.length() * 3);
-        for (int i = 0; i < hexString.length(); ) {
-            var nextHexInt = hexString.substring(i, (i += 2));
-            var decimalInt = Integer.toString(Integer.parseInt(nextHexInt, 16));
-
-            if (decimalInt.length() < 3) {
-                builder.append("0".repeat(3 - decimalInt.length()));
-            }
-            builder.append(decimalInt);
-        }
-        return builder;
     }
 
     @Override
     public String toString() {
         return new StringJoiner(", ", Fit.class.getSimpleName() + ": {", "}")
-                .add("fitNumber: " + Integer.toHexString(fitNumber).toUpperCase())
-                .add("institutionIndex: " + Integer.toHexString(institutionIndex))
-                .add("institutionId: " + Long.toHexString(institutionId))
-                .add("indirectNextStateIndex: " + Integer.toHexString(indirectNextStateIndex))
-                .add("algorithmOrBankId: " + Integer.toHexString(algorithmOrBankId))
+                .add("fitNumber: " + fitNumber)
+                .add("institutionIndex: " + Integer.toHexString(institutionIndex).toUpperCase())
+                .add("institutionId: " + Long.toHexString(institutionId).toUpperCase())
+                .add("indirectNextStateIndex: " + Integer.toHexString(indirectNextStateIndex).toUpperCase())
+                .add("algorithmOrBankId: " + Integer.toHexString(algorithmOrBankId).toUpperCase())
                 .add("maxPinDigitsEntered: " + maxPinDigitsEntered)
                 .add("maxPinDigitsChecked: " + maxPinDigitsChecked)
-                .add("pinPad: " + Integer.toHexString(pinPad))
-                .add("panDataIndex: " + Integer.toHexString(panDataIndex))
-                .add("panDataLength: " + Integer.toHexString(panDataLength))
-                .add("panPad: " + Integer.toHexString(panPad))
-                .add("trackThreePinRetryCount: " + Integer.toHexString(track3PinRetryCount))
-                .add("pinOffsetIndex: " + Integer.toHexString(pinOffsetIndex))
-                .add("decimalisationTable: " + decimalisationTable)
-                .add("encryptedPinKey: " + encryptedPinKey)
-                .add("indexReferencePoint: " + Integer.toHexString(indexReferencePoint))
-                .add("languageCodeIndex: " + Integer.toHexString(languageCodeIndex))
-                .add("cimSensorFlag: " + Integer.toHexString(cimSensorFlag))
-                .add("reservedTag: " + Integer.toHexString(reservedField))
-                .add("pinBlockFormat: " + Integer.toHexString(pinBlockFormat))
+                .add("pinPad: " + Integer.toHexString(pinPad).toUpperCase())
+                .add("panDataIndex: " + Integer.toHexString(panDataIndex).toUpperCase())
+                .add("panDataLength: " + Integer.toHexString(panDataLength).toUpperCase())
+                .add("panPad: " + Integer.toHexString(panPad).toUpperCase())
+                .add("trackThreePinRetryCount: " + Integer.toHexString(track3PinRetryCount).toUpperCase())
+                .add("pinOffsetIndex: " + Integer.toHexString(pinOffsetIndex).toUpperCase())
+                .add("decimalisationTable: " + Long.toHexString(decimalisationTable).toUpperCase())
+                .add("encryptedPinKey: " + Arrays.toString(encryptedPinKey))
+                .add("indexReferencePoint: " + Integer.toHexString(indexReferencePoint).toUpperCase())
+                .add("languageCodeIndex: " + Integer.toHexString(languageCodeIndex).toUpperCase())
+                .add("cimSensorFlag: " + Integer.toHexString(cimSensorFlag).toUpperCase())
+                .add("reservedTag: " + Integer.toHexString(reservedField).toUpperCase())
+                .add("pinBlockFormat: " + Integer.toHexString(pinBlockFormat).toUpperCase())
                 .toString();
     }
 
@@ -314,8 +284,8 @@ public class Fit implements NdcComponent {
                 cimSensorFlag == fit.cimSensorFlag &&
                 reservedField == fit.reservedField &&
                 pinBlockFormat == fit.pinBlockFormat &&
-                decimalisationTable.equals(fit.decimalisationTable) &&
-                encryptedPinKey.equals(fit.encryptedPinKey) &&
+                decimalisationTable == fit.decimalisationTable &&
+                Arrays.equals(encryptedPinKey, fit.encryptedPinKey) &&
                 maxPinDigitsEntered.equals(fit.maxPinDigitsEntered) &&
                 maxPinDigitsChecked.equals(fit.maxPinDigitsChecked);
 
@@ -325,7 +295,7 @@ public class Fit implements NdcComponent {
     public int hashCode() {
         return Objects.hash(fitNumber, institutionIndex, institutionId, indirectNextStateIndex, algorithmOrBankId,
                 maxPinDigitsEntered, maxPinDigitsChecked, pinPad, panDataIndex, panDataLength, panPad,
-                track3PinRetryCount, pinOffsetIndex, decimalisationTable, encryptedPinKey, indexReferencePoint,
+                track3PinRetryCount, pinOffsetIndex, decimalisationTable, Arrays.hashCode(encryptedPinKey), indexReferencePoint,
                 languageCodeIndex, cimSensorFlag, reservedField, pinBlockFormat);
     }
 }

@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 import java.util.Set;
 
 public class FitDataLoadCommandIntegrationTest implements CentralMessageListener, DeviceConfigurationSupplier<CentralMessageMeta> {
-    private final String message = "30" +
+    private final String encodedMessage = "30" +
             "\u001C000" +
             "\u001C000" +
             "\u001C15" +
@@ -33,7 +33,7 @@ public class FitDataLoadCommandIntegrationTest implements CentralMessageListener
                 ConfigurationOptions.EMPTY);
         messagePreProcessor = new CentralMessagePreProcessor(this, this);
 
-        messageBuffer = NdcCharBuffer.wrap(message);
+        messageBuffer = NdcCharBuffer.wrap(encodedMessage);
         messagePreProcessor.processMessage(messageBuffer);
     }
 
@@ -59,6 +59,6 @@ public class FitDataLoadCommandIntegrationTest implements CentralMessageListener
     public void encoded_message_should_be_equal_to_original() {
         final String actualEncoded = fitDataLoadCommand.toNdcString();
         Assertions.assertThat(actualEncoded)
-                .isEqualTo(message);
+                .isEqualTo(encodedMessage);
     }
 }

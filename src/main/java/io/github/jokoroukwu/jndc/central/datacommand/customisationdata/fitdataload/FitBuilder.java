@@ -3,7 +3,9 @@ package io.github.jokoroukwu.jndc.central.datacommand.customisationdata.fitdatal
 import io.github.jokoroukwu.jndc.central.datacommand.customisationdata.fitdataload.field.pckln.MaxPinDigitsChecked;
 import io.github.jokoroukwu.jndc.central.datacommand.customisationdata.fitdataload.field.pmxpn.MaxPinDigitsEntered;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public final class FitBuilder {
     private int fitNumber;
@@ -19,8 +21,8 @@ public final class FitBuilder {
     private int panPad;
     private int track3PinRetryCount;
     private int pinOffsetData;
-    private String decimalisationTable;
-    private String encryptedPinKey;
+    private long decimalisationTable;
+    private byte[] encryptedPinKey;
     private int indexReferencePoint;
     private int languageCodeIndex;
     private int cimSensorFlag;
@@ -92,12 +94,12 @@ public final class FitBuilder {
         return this;
     }
 
-    public FitBuilder withDecimalisationTable(String decimalisationTable) {
+    public FitBuilder withDecimalisationTable(long decimalisationTable) {
         this.decimalisationTable = decimalisationTable;
         return this;
     }
 
-    public FitBuilder withEncryptedPinKey(String encryptedPinKey) {
+    public FitBuilder withEncryptedPinKey(byte[] encryptedPinKey) {
         this.encryptedPinKey = encryptedPinKey;
         return this;
     }
@@ -179,12 +181,12 @@ public final class FitBuilder {
         return pinOffsetData;
     }
 
-    public String getDecimalisationTable() {
+    public long getDecimalisationTable() {
         return decimalisationTable;
     }
 
-    public String getEncryptedPinKey() {
-        return encryptedPinKey;
+    public byte[] getEncryptedPinKey() {
+        return encryptedPinKey.clone();
     }
 
     public int getIndexReferencePoint() {
@@ -255,6 +257,32 @@ public final class FitBuilder {
     }
 
     @Override
+    public String toString() {
+        return new StringJoiner(", ", FitBuilder.class.getSimpleName() + ": {", "}")
+                .add("fitNumber: " + fitNumber)
+                .add("institutionIdIndex: " + institutionIdIndex)
+                .add("institutionId: " + institutionId)
+                .add("indirectNextStateIndex: " + indirectNextStateIndex)
+                .add("algorithmOrBankId: " + algorithmOrBankId)
+                .add("maxPinDigitsEntered: " + maxPinDigitsEntered)
+                .add("maxPinDigitsChecked: " + maxPinDigitsChecked)
+                .add("pinPad: " + pinPad)
+                .add("panDataIndex: " + panDataIndex)
+                .add("panDataLength: " + panDataLength)
+                .add("panPad: " + panPad)
+                .add("track3PinRetryCount: " + track3PinRetryCount)
+                .add("pinOffsetData: " + pinOffsetData)
+                .add("decimalisationTable: " + decimalisationTable)
+                .add("encryptedPinKey: " + Arrays.toString(encryptedPinKey))
+                .add("indexReferencePoint: " + indexReferencePoint)
+                .add("languageCodeIndex: " + languageCodeIndex)
+                .add("cimSensorFlag: " + cimSensorFlag)
+                .add("reservedField: " + reservedField)
+                .add("pinBlockFormat: " + pinBlockFormat)
+                .toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -275,8 +303,8 @@ public final class FitBuilder {
                 cimSensorFlag == that.cimSensorFlag &&
                 reservedField == that.reservedField &&
                 pinBlockFormat == that.pinBlockFormat &&
-                Objects.equals(decimalisationTable, that.decimalisationTable) &&
-                Objects.equals(encryptedPinKey , that.encryptedPinKey )&&
+                decimalisationTable == that.decimalisationTable &&
+                Arrays.equals(encryptedPinKey, that.encryptedPinKey) &&
                 Objects.equals(maxPinDigitsEntered, that.maxPinDigitsEntered) &&
                 Objects.equals(maxPinDigitsChecked, that.maxPinDigitsChecked);
 
@@ -286,7 +314,7 @@ public final class FitBuilder {
     public int hashCode() {
         return Objects.hash(fitNumber, institutionIdIndex, institutionId, indirectNextStateIndex, algorithmOrBankId,
                 maxPinDigitsEntered, maxPinDigitsChecked, pinPad, panDataIndex, panDataLength, panPad, track3PinRetryCount,
-                pinOffsetData, decimalisationTable, encryptedPinKey, indexReferencePoint, languageCodeIndex, cimSensorFlag,
+                pinOffsetData, decimalisationTable, Arrays.hashCode(encryptedPinKey), indexReferencePoint, languageCodeIndex, cimSensorFlag,
                 reservedField, pinBlockFormat);
     }
 }
