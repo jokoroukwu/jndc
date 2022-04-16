@@ -6,6 +6,7 @@ of APTRA™ Advance NDC messages.
 This library was created as a side project of my full-time job
 and only supports the features I needed at the time.
 
+Usage examples can be found [here](examples/src/main/java/io/github/jokoroukwu/examples)
 
 Contribution is welcome :)
 

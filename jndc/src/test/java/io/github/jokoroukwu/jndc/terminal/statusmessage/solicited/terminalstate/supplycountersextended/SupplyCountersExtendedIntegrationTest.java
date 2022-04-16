@@ -40,8 +40,8 @@ public class SupplyCountersExtendedIntegrationTest implements TerminalMessageLis
     }
 
     @Override
-    public void onSupplyCountersExtendedMessage(SolicitedStatusMessage<SupplyCountersExtended> supplyCountersExtendedMessage) {
-        this.extendedSupplyCountersMessage = supplyCountersExtendedMessage;
+    public void onSupplyCountersExtendedMessage(SolicitedStatusMessage<SupplyCountersExtended> message) {
+        this.extendedSupplyCountersMessage = message;
     }
 
     @Test(dataProvider = "configurationProvider")
