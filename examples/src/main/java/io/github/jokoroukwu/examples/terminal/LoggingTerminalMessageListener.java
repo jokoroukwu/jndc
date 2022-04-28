@@ -13,6 +13,7 @@ import io.github.jokoroukwu.jndc.terminal.statusmessage.readyb.ReadyBStatus;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.solicited.terminalstate.supplycountersbasic.SupplyCountersBasic;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.solicited.terminalstate.supplycountersextended.SupplyCountersExtended;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusMessage;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.timeofdayclock.TimeOfDayClockFailure;
 import io.github.jokoroukwu.jndc.terminal.transactionrequestmessage.TransactionRequestMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,5 +89,10 @@ public class LoggingTerminalMessageListener implements TerminalMessageListener {
     @Override
     public void onSupplyCountersExtendedMessage(SolicitedStatusMessage<SupplyCountersExtended> message) {
         LOGGER.info("Supply Counters Extended message received: {}", message);
+    }
+
+    @Override
+    public void onTimeOfDayClockFailureMessage(UnsolicitedStatusMessage<TimeOfDayClockFailure> message) {
+        LOGGER.info("Time of Day Clock Failure Unsolicited Status message received: {}", message);
     }
 }

@@ -16,6 +16,14 @@ public final class UnsolicitedStatusMessageBuilder<T extends UnsolicitedStatusIn
         return this;
     }
 
+    public Luno getLuno() {
+        return luno;
+    }
+
+    public T getStatusInformation() {
+        return statusInformation;
+    }
+
     public UnsolicitedStatusMessage<T> build() {
         return new UnsolicitedStatusMessage<>(luno, statusInformation);
     }
