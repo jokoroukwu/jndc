@@ -11,9 +11,11 @@ public enum ErrorSeverity implements NdcComponent {
     FATAL('4');
 
     private final char value;
+    private final String displayedName;
 
     ErrorSeverity(char value) {
         this.value = value;
+        displayedName = String.format("%s ('%c')", name(), value);
     }
 
     public static DescriptiveOptional<ErrorSeverity> forValue(char value) {
@@ -49,4 +51,8 @@ public enum ErrorSeverity implements NdcComponent {
     }
 
 
+    @Override
+    public String toString() {
+        return displayedName;
+    }
 }

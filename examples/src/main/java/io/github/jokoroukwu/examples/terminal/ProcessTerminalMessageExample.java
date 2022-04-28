@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 public class ProcessTerminalMessageExample {
-    //  This is the main entrypoint for terminal originated messages.
+    //  TerminalMessagePreProcessor is the main entrypoint for terminal originated messages.
     private static final TerminalMessagePreProcessor TERMINAL_MESSAGE_PRE_PROCESSOR
             = new TerminalMessagePreProcessor(new LoggingTerminalMessageListener(), new FakeDeviceConfigurationSupplier());
 
@@ -18,7 +18,7 @@ public class ProcessTerminalMessageExample {
         TERMINAL_MESSAGE_PRE_PROCESSOR.processMessage(ndcCharBuffer);
     }
 
-    //  pretend this are message bytes received from some ATM.
+    //  pretend these are message bytes received from some ATM.
     private static byte[] getRawMessage() {
         final String message = "11" +
                 "\u001C444555444" +

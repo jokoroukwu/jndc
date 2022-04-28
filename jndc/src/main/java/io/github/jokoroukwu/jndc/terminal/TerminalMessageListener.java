@@ -23,6 +23,8 @@ import io.github.jokoroukwu.jndc.terminal.statusmessage.solicited.terminalstate.
 import io.github.jokoroukwu.jndc.terminal.statusmessage.solicited.terminalstate.supplycountersextended.SupplyCountersExtended;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.solicited.terminalstate.supplycountersextended.SupplyCountersExtendedMessageListener;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusMessage;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.timeofdayclock.TimeOfDayClockFailure;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.timeofdayclock.TimeOfDayClockFailureMessageListener;
 import io.github.jokoroukwu.jndc.terminal.transactionrequestmessage.TransactionRequestMessage;
 import io.github.jokoroukwu.jndc.terminal.transactionrequestmessage.TransactionRequestMessageListener;
 
@@ -30,7 +32,7 @@ public interface TerminalMessageListener extends TransactionRequestMessageListen
         UnsolicitedCardReaderWriterFaultMessageListener, EncryptorInitialisationDataMessageListener,
         SupplyCountersBasicMessageListener, SupplyCountersExtendedMessageListener, ReadyBStatusMessageListener,
         CommandRejectStatusMessageListener, ReadyStatusMessageListener, GenericSolicitedStatusMessageListener,
-        SolicitedGenericDeviceFaultMessageListener, SolicitedCardReaderWriterFaultMessageListener {
+        SolicitedGenericDeviceFaultMessageListener, SolicitedCardReaderWriterFaultMessageListener, TimeOfDayClockFailureMessageListener {
 
     @Override
     default void onTransactionRequestMessage(TransactionRequestMessage message) {
@@ -93,6 +95,11 @@ public interface TerminalMessageListener extends TransactionRequestMessageListen
 
     @Override
     default void onSupplyCountersExtendedMessage(SolicitedStatusMessage<SupplyCountersExtended> message) {
+
+    }
+
+    @Override
+    default void onTimeOfDayClockFailureMessage(UnsolicitedStatusMessage<TimeOfDayClockFailure> message) {
 
     }
 }

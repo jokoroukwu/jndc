@@ -1,11 +1,10 @@
 #Gradle related
 .gradle/
 **/build
-**/out
-**/allure-results
-.allure
+
 
 # IntelliJ IDEA
+**/out
 .idea/
 *.iml
 *.iws

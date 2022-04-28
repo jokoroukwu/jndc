@@ -10,6 +10,8 @@ import io.github.jokoroukwu.jndc.trackdata.TrackDataReader;
 import io.github.jokoroukwu.jndc.util.ObjectUtils;
 import io.github.jokoroukwu.jndc.util.optional.DescriptiveOptional;
 
+import static io.github.jokoroukwu.jndc.exception.NdcMessageParseException.withMessage;
+
 public class CardReaderWriterAdditionalDataAppender implements ConfigurableNdcComponentAppender<CardReaderWriterFaultBuilder> {
     private final NdcComponentReader<DescriptiveOptional<String>> track1DataReader;
     private final NdcComponentReader<DescriptiveOptional<String>> track2DataReader;
@@ -36,13 +38,16 @@ public class CardReaderWriterAdditionalDataAppender implements ConfigurableNdcCo
                     .ifPresent(errorMessage
                             -> NdcMessageParseException.onNoFieldSeparator(UnsolicitedStatusMessage.COMMAND_NAME, "'Additional Data'", errorMessage, ndcCharBuffer));
             final String track1Data = track1DataReader.readComponent(ndcCharBuffer)
-                    .getOrThrow(errorMessage -> NdcMessageParseException.withMessage(UnsolicitedStatusMessage.COMMAND_NAME, "'Track 1 Data'", errorMessage, ndcCharBuffer));
+                    .getOrThrow(errorMessage
+                            -> withMessage(UnsolicitedStatusMessage.COMMAND_NAME, "'Track 1 Data'", errorMessage, ndcCharBuffer));
 
             final String track2Data = track2DataReader.readComponent(ndcCharBuffer)
-                    .getOrThrow(errorMessage -> NdcMessageParseException.withMessage(UnsolicitedStatusMessage.COMMAND_NAME, "'Track 2 Data'", errorMessage, ndcCharBuffer));
+                    .getOrThrow(errorMessage
+                            -> withMessage(UnsolicitedStatusMessage.COMMAND_NAME, "'Track 2 Data'", errorMessage, ndcCharBuffer));
 
             final String track3Data = track3DataReader.readComponent(ndcCharBuffer)
-                    .getOrThrow(errorMessage -> NdcMessageParseException.withMessage(UnsolicitedStatusMessage.COMMAND_NAME, "'Track 3 Data'", errorMessage, ndcCharBuffer));
+                    .getOrThrow(errorMessage
+                            -> withMessage(UnsolicitedStatusMessage.COMMAND_NAME, "'Track 3 Data'", errorMessage, ndcCharBuffer));
 
             stateObject.withAdditionalData(new CardReaderWriterAdditionalData(track1Data, track2Data, track3Data));
             checkNoDataRemains(ndcCharBuffer);
@@ -53,7 +58,7 @@ public class CardReaderWriterAdditionalDataAppender implements ConfigurableNdcCo
         if (ndcCharBuffer.hasRemaining()) {
             final String errorMessage = String.format("unexpected data '%s' at position %d", ndcCharBuffer.subBuffer(),
                     ndcCharBuffer.position());
-            throw NdcMessageParseException.withMessage(UnsolicitedStatusMessage.COMMAND_NAME, "'Additional Data'", errorMessage, ndcCharBuffer);
+            throw withMessage(UnsolicitedStatusMessage.COMMAND_NAME, "'Additional Data'", errorMessage, ndcCharBuffer);
         }
     }
 }
