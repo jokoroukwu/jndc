@@ -3,7 +3,7 @@ package io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.timeofdaycl
 import io.github.jokoroukwu.jndc.terminal.TerminalMessageClass;
 import io.github.jokoroukwu.jndc.terminal.TerminalMessageSubClass;
 import io.github.jokoroukwu.jndc.terminal.dig.Dig;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.DeviceFault;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.DeviceStatusInformation;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.ErrorSeverity;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusInformation;
 import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
@@ -12,21 +12,20 @@ import io.github.jokoroukwu.jndc.util.ObjectUtils;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class TimeOfDayClockFailure implements DeviceFault, UnsolicitedStatusInformation {
-    public static final String COMMAND_NAME = TerminalMessageClass.UNSOLICITED + ": "
-            + TerminalMessageSubClass.STATUS_MESSAGE
-            + ": "
-            + Dig.TIME_OF_DAY_CLOCK;
+public class TimeOfDayClock implements DeviceStatusInformation, UnsolicitedStatusInformation {
+    public static final String COMMAND_NAME = TerminalMessageClass.UNSOLICITED
+            + ": " + TerminalMessageSubClass.STATUS_MESSAGE
+            + ": " + Dig.TIME_OF_DAY_CLOCK;
 
     private final ClockDeviceStatus deviceStatus;
     private final ErrorSeverity errorSeverity;
 
-    public TimeOfDayClockFailure(ClockDeviceStatus deviceStatus, ErrorSeverity errorSeverity) {
+    public TimeOfDayClock(ClockDeviceStatus deviceStatus, ErrorSeverity errorSeverity) {
         this.deviceStatus = ObjectUtils.validateNotNull(deviceStatus, "'Device Status'");
         this.errorSeverity = validateErrorSeverity(errorSeverity);
     }
 
-    TimeOfDayClockFailure(ClockDeviceStatus deviceStatus, ErrorSeverity errorSeverity, Void unused) {
+    TimeOfDayClock(ClockDeviceStatus deviceStatus, ErrorSeverity errorSeverity, Void unused) {
         this.deviceStatus = deviceStatus;
         this.errorSeverity = errorSeverity;
     }
@@ -56,7 +55,7 @@ public class TimeOfDayClockFailure implements DeviceFault, UnsolicitedStatusInfo
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", TimeOfDayClockFailure.class.getSimpleName() + ": {", "}")
+        return new StringJoiner(", ", TimeOfDayClock.class.getSimpleName() + ": {", "}")
                 .add("deviceStatus: " + deviceStatus)
                 .add("errorSeverity: " + errorSeverity)
                 .toString();
@@ -66,7 +65,7 @@ public class TimeOfDayClockFailure implements DeviceFault, UnsolicitedStatusInfo
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TimeOfDayClockFailure that = (TimeOfDayClockFailure) o;
+        TimeOfDayClock that = (TimeOfDayClock) o;
         return deviceStatus == that.deviceStatus && errorSeverity == that.errorSeverity;
     }
 

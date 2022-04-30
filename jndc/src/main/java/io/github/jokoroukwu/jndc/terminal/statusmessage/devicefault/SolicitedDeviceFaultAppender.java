@@ -51,19 +51,19 @@ public class SolicitedDeviceFaultAppender
                                 DeviceConfiguration deviceConfiguration) {
 
         ndcCharBuffer.trySkipFieldSeparator()
-                .ifPresent(errorMessage -> NdcMessageParseException.onNoFieldSeparator(DeviceFault.COMMAND_NAME,
+                .ifPresent(errorMessage -> NdcMessageParseException.onNoFieldSeparator(DeviceStatusInformation.COMMAND_NAME,
                         "Status Information", errorMessage, ndcCharBuffer));
 
         final Dig dig = readDig(ndcCharBuffer);
         appenderFactory.getAppender(dig)
                 .ifPresentOrElse(appender -> appender.appendComponent(ndcCharBuffer, stateObject, deviceConfiguration),
-                        () -> onConfigError(DeviceFault.COMMAND_NAME, "no appender configured for DIG " + dig));
+                        () -> onConfigError(DeviceStatusInformation.COMMAND_NAME, "no appender configured for DIG " + dig));
     }
 
     private Dig readDig(NdcCharBuffer ndcCharBuffer) {
         return ndcCharBuffer.tryReadNextChar()
                 .flatMapToObject(Dig::forValue)
-                .getOrThrow(errorMessage -> NdcMessageParseException.withMessage(DeviceFault.COMMAND_NAME, "Device Identifier Graphic (DIG)",
+                .getOrThrow(errorMessage -> NdcMessageParseException.withMessage(DeviceStatusInformation.COMMAND_NAME, "Device Identifier Graphic (DIG)",
                         errorMessage, ndcCharBuffer));
     }
 }

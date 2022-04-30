@@ -6,7 +6,7 @@ import io.github.jokoroukwu.jndc.terminal.TerminalMessageSubClass;
 import io.github.jokoroukwu.jndc.terminal.dig.Dig;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.StatusDescriptor;
 
-public interface DeviceFault extends NdcComponent {
+public interface DeviceStatusInformation extends NdcComponent {
     String COMMAND_NAME = TerminalMessageClass.SOLICITED + ": " + TerminalMessageSubClass.STATUS_MESSAGE + ": "
             + StatusDescriptor.DEVICE_FAULT;
 

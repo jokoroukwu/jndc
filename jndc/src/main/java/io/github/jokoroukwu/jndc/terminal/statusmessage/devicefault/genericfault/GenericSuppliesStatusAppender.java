@@ -4,8 +4,8 @@ import io.github.jokoroukwu.jndc.NdcCharBuffer;
 import io.github.jokoroukwu.jndc.exception.NdcMessageParseException;
 import io.github.jokoroukwu.jndc.terminal.ConfigurableNdcComponentAppender;
 import io.github.jokoroukwu.jndc.terminal.DeviceConfiguration;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.DeviceFault;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.DeviceFaultFieldAppender;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.DeviceStatusInformation;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.SuppliesStatus;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class GenericSuppliesStatusAppender extends DeviceFaultFieldAppender<Gene
         if (ndcCharBuffer.hasRemaining() && !hasFollowingMac(deviceConfiguration, ndcCharBuffer)) {
             //  at least the field separator should be present
             ndcCharBuffer.trySkipFieldSeparator()
-                    .ifPresent(errorMessage -> NdcMessageParseException.onNoFieldSeparator(DeviceFault.COMMAND_NAME, "Supplies Status",
+                    .ifPresent(errorMessage -> NdcMessageParseException.onNoFieldSeparator(DeviceStatusInformation.COMMAND_NAME, "Supplies Status",
                             errorMessage, ndcCharBuffer));
             final List<SuppliesStatus> suppliesStatuses = readSuppliesStatuses(ndcCharBuffer);
             stateObject.withSuppliesStatuses(suppliesStatuses);
@@ -45,7 +45,7 @@ public class GenericSuppliesStatusAppender extends DeviceFaultFieldAppender<Gene
             ndcCharBuffer.tryReadNextChar()
                     .flatMapToObject(SuppliesStatus::forValue)
                     .resolve(suppliesStatuses::add, errorMessage
-                            -> NdcMessageParseException.onFieldParseError(DeviceFault.COMMAND_NAME, "Supplies Status", errorMessage, ndcCharBuffer));
+                            -> NdcMessageParseException.onFieldParseError(DeviceStatusInformation.COMMAND_NAME, "Supplies Status", errorMessage, ndcCharBuffer));
         } while (ndcCharBuffer.hasFieldDataRemaining());
 
         suppliesStatuses.trimToSize();

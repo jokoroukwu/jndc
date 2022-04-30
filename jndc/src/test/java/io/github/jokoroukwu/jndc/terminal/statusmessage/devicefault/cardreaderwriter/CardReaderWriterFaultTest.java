@@ -2,7 +2,7 @@ package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreaderw
 
 import io.github.jokoroukwu.jndc.terminal.completiondata.CompletionData;
 import io.github.jokoroukwu.jndc.terminal.dig.Dig;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.DeviceFaultTest;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.DeviceStatusInformationTest;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.ErrorSeverity;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.SuppliesStatus;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterFault;
@@ -17,7 +17,7 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-public class CardReaderWriterFaultTest extends DeviceFaultTest {
+public class CardReaderWriterFaultTest extends DeviceStatusInformationTest {
     private final Dig dig = Dig.MAGNETIC_CARD_READER_WRITER;
 
     private final ErrorSeverity dummyErrorSeverity = ErrorSeverity.NO_ERROR;

@@ -3,7 +3,7 @@ package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader;
 import io.github.jokoroukwu.jndc.terminal.completiondata.CompletionData;
 import io.github.jokoroukwu.jndc.terminal.dig.Dig;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.SolicitedStatusInformation;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.DeviceFault;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.DeviceStatusInformation;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.ErrorSeverity;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.SuppliesStatus;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.diagnosticstatus.DiagnosticStatus;
@@ -13,7 +13,7 @@ import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
 
 import java.util.*;
 
-public class CardReaderWriterFault implements DeviceFault, SolicitedStatusInformation, UnsolicitedStatusInformation {
+public class CardReaderWriterFault implements DeviceStatusInformation, SolicitedStatusInformation, UnsolicitedStatusInformation {
     private final TransactionDeviceStatus transactionDeviceStatus;
     private final List<ErrorSeverity> errorSeverities;
     private final DiagnosticStatus diagnosticStatus;

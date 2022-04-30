@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 
-public abstract class DeviceFaultTest {
+public abstract class DeviceStatusInformationTest {
     protected final TransactionCategoryCode dummyCurrencyCodeTlv = new TransactionCategoryCode("AB");
     protected final CompletionData dummyCompletionData = new CompletionData(Map.of(dummyCurrencyCodeTlv.getTag(), dummyCurrencyCodeTlv),
             List.of(new ScriptResult(ProcessingResult.SUCCESS, 1,
