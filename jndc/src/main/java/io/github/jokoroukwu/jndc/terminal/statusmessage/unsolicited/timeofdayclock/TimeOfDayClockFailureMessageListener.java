@@ -4,5 +4,5 @@ import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedS
 
 public interface TimeOfDayClockFailureMessageListener {
 
-    void onTimeOfDayClockFailureMessage(UnsolicitedStatusMessage<TimeOfDayClockFailure> timeOfDayClockFailureMessage);
+    void onTimeOfDayClockStatusMessage(UnsolicitedStatusMessage<TimeOfDayClock> timeOfDayClockFailureMessage);
 }

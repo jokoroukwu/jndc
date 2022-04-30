@@ -25,7 +25,7 @@ import java.util.Map;
 import static io.github.jokoroukwu.jndc.util.text.Strings.EMPTY_STRING;
 import static org.mockito.Mockito.*;
 
-public class SolicitedCardReaderWriterFaultAppenderIntegrationTest extends DeviceFaultTest {
+public class SolicitedCardReaderWriterFaultAppenderIntegrationTest extends DeviceStatusInformationTest {
     private final SolicitedStatusMessageBuilder<SolicitedStatusInformation> solicitedStatusMessageBuilder
             = new SolicitedStatusMessageBuilder<>()
             .withLuno(Luno.DEFAULT)

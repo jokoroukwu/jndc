@@ -2,7 +2,7 @@ package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreaderw
 
 import io.github.jokoroukwu.jndc.NdcCharBuffer;
 import io.github.jokoroukwu.jndc.terminal.ConfigurableNdcComponentAppender;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.DeviceFaultTest;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.DeviceStatusInformationTest;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.SuppliesStatus;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterFaultBuilder;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterSuppliesStatusAppender;
@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CardReaderWriterFaultSuppliesStatusAppenderTest extends DeviceFaultTest {
+public class CardReaderWriterFaultSuppliesStatusAppenderTest extends DeviceStatusInformationTest {
     private CardReaderWriterFaultBuilder builder;
     private CardReaderWriterSuppliesStatusAppender appender;
 

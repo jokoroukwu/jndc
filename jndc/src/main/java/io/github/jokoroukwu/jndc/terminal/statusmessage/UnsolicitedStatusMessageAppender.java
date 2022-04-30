@@ -14,7 +14,8 @@ import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.genericfault
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.genericfault.UnsolicitedGenericDeviceFaultMessageListener;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusInformation;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusMessageBuilder;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.timeofdayclock.TimeOfDayClockFailureAppender;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.powerfailure.PowerFailureMessageAppender;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.timeofdayclock.TimeOfDayClockMessageAppender;
 import io.github.jokoroukwu.jndc.util.ObjectUtils;
 
 import java.util.EnumMap;
@@ -45,7 +46,8 @@ public class UnsolicitedStatusMessageAppender implements NdcComponentAppender<Te
         final Map<Dig, ConfigurableNdcComponentAppender<UnsolicitedStatusMessageBuilder<UnsolicitedStatusInformation>>> appenderMap
                 = new EnumMap<>(Dig.class);
         appenderMap.put(Dig.MAGNETIC_CARD_READER_WRITER, new UnsolicitedCardReaderWriterFaultAppender(messageListener));
-        appenderMap.put(Dig.TIME_OF_DAY_CLOCK, new TimeOfDayClockFailureAppender(messageListener));
+        appenderMap.put(Dig.TIME_OF_DAY_CLOCK, new TimeOfDayClockMessageAppender(messageListener));
+        appenderMap.put(Dig.COMMUNICATIONS, new PowerFailureMessageAppender(messageListener));
         putGenericAppenders(appenderMap, messageListener);
 
         appenderFactory = new ConfigurableNdcComponentAppenderFactoryBase<>(appenderMap);
@@ -55,7 +57,13 @@ public class UnsolicitedStatusMessageAppender implements NdcComponentAppender<Te
             ConfigurableNdcComponentAppender<UnsolicitedStatusMessageBuilder<UnsolicitedStatusInformation>>> appenderMap,
                                             UnsolicitedGenericDeviceFaultMessageListener messageListener) {
 
-        for (Dig dig : EnumSet.complementOf(EnumSet.of(Dig.TIME_OF_DAY_CLOCK, Dig.MAGNETIC_CARD_READER_WRITER))) {
+        final EnumSet<Dig> digsWithImplementations = EnumSet.of(
+                Dig.TIME_OF_DAY_CLOCK,
+                Dig.MAGNETIC_CARD_READER_WRITER,
+                Dig.COMMUNICATIONS
+        );
+
+        for (Dig dig : EnumSet.complementOf(digsWithImplementations)) {
             appenderMap.put(dig, new UnsolicitedGenericDeviceFaultAppender(dig, messageListener));
         }
     }

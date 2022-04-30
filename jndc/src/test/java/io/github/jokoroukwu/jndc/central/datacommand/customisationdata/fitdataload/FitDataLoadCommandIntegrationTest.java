@@ -28,9 +28,7 @@ public class FitDataLoadCommandIntegrationTest implements CentralMessageListener
 
     @BeforeMethod
     public void setUp() {
-        deviceConfiguration = new DeviceConfigurationBase(false,
-                Set.of(),
-                ConfigurationOptions.EMPTY);
+        deviceConfiguration = new DeviceConfigurationBase(false, Set.of(), ConfigurationOptions.EMPTY);
         messagePreProcessor = new CentralMessagePreProcessor(this, this);
 
         messageBuffer = NdcCharBuffer.wrap(encodedMessage);

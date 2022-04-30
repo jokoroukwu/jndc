@@ -2,7 +2,7 @@ package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault;
 
 import io.github.jokoroukwu.jndc.NdcCharBuffer;
 import io.github.jokoroukwu.jndc.terminal.ConfigurableNdcComponentAppender;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.DeviceFaultTest;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.DeviceStatusInformationTest;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterFaultBuilder;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.diagnosticstatus.DiagnosticStatus;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.diagnosticstatus.DiagnosticStatusAppender;
@@ -17,7 +17,7 @@ import static io.github.jokoroukwu.jndc.util.text.Strings.EMPTY_STRING;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class DiagnosticStatusAppenderTest extends DeviceFaultTest {
+public class DiagnosticStatusAppenderTest extends DeviceStatusInformationTest {
     private final String minData = BmpStringGenerator.HEX.fixedLength(2);
     private final String arbitraryData = BmpStringGenerator.HEX.fixedLength(10);
     private ConfigurableNdcComponentAppender<CardReaderWriterFaultBuilder> nextAppenderMock;

@@ -31,7 +31,7 @@ import static io.github.jokoroukwu.jndc.util.text.Strings.EMPTY_STRING;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class GenericDeviceFaultAppenderIntegrationTest {
+public class GenericDeviceStatusInformationAppenderIntegrationTest {
     private final Dig dig = Dig.MAGNETIC_CARD_READER_WRITER;
     private final SolicitedStatusMessageBuilder<SolicitedStatusInformation> solicitedDeviceFaultMeta
             = new SolicitedStatusMessageBuilder<>()

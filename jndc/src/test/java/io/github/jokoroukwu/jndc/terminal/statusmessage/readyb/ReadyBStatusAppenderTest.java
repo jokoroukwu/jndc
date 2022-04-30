@@ -22,7 +22,7 @@ import java.util.Optional;
 import static io.github.jokoroukwu.jndc.util.text.Strings.EMPTY_STRING;
 import static org.mockito.Mockito.*;
 
-public class ReadyBStatusAppenderTest extends DeviceFaultTest {
+public class ReadyBStatusAppenderTest extends DeviceStatusInformationTest {
     private final TransactionData<? extends Cassette> transactionData
             = TransactionData.depositData(new CdmRecycleCassette(1, 1,
             BmpStringGenerator.HEX.fixedLength(10)));

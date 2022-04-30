@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This listener was created for just to demonstrate
+ * This listener implementation is just a demonstration of
  * how central messages are consumed.
  */
 public class LoggingCentralMessageListener implements CentralMessageListener {

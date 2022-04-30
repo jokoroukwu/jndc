@@ -7,16 +7,25 @@ import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.ErrorSeverit
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusInformation;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusMessage;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusMessageBuilder;
+import io.github.jokoroukwu.jndc.trailingdata.TrailingDataChecker;
+import io.github.jokoroukwu.jndc.trailingdata.TrailingDataCheckerBase;
 import io.github.jokoroukwu.jndc.util.ObjectUtils;
 
+import static io.github.jokoroukwu.jndc.exception.NdcMessageParseException.onMessageParseError;
 import static io.github.jokoroukwu.jndc.exception.NdcMessageParseException.withMessage;
-import static io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.timeofdayclock.TimeOfDayClockFailure.COMMAND_NAME;
+import static io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.timeofdayclock.TimeOfDayClock.COMMAND_NAME;
 
-public class TimeOfDayClockFailureAppender implements ConfigurableNdcComponentAppender<UnsolicitedStatusMessageBuilder<UnsolicitedStatusInformation>> {
+public class TimeOfDayClockMessageAppender implements ConfigurableNdcComponentAppender<UnsolicitedStatusMessageBuilder<UnsolicitedStatusInformation>> {
     private final TimeOfDayClockFailureMessageListener messageListener;
+    private final TrailingDataChecker trailingDataChecker;
 
-    public TimeOfDayClockFailureAppender(TimeOfDayClockFailureMessageListener messageListener) {
+    public TimeOfDayClockMessageAppender(TimeOfDayClockFailureMessageListener messageListener, TrailingDataChecker trailingDataChecker) {
         this.messageListener = ObjectUtils.validateNotNull(messageListener, "messageListener");
+        this.trailingDataChecker = ObjectUtils.validateNotNull(trailingDataChecker, "trailingDataChecker");
+    }
+
+    public TimeOfDayClockMessageAppender(TimeOfDayClockFailureMessageListener messageListener) {
+        this(messageListener, TrailingDataCheckerBase.INSTANCE);
     }
 
     @Override
@@ -27,13 +36,16 @@ public class TimeOfDayClockFailureAppender implements ConfigurableNdcComponentAp
         final ClockDeviceStatus clockDeviceStatus = readDeviceStatus(ndcCharBuffer);
         final ErrorSeverity errorSeverity = readErrorSeverity(ndcCharBuffer);
 
+        trailingDataChecker.getErrorMessageOnTrailingData(ndcCharBuffer)
+                .ifPresent(errorMessage -> onMessageParseError(COMMAND_NAME, errorMessage, ndcCharBuffer));
+
         final UnsolicitedStatusMessageBuilder<? extends UnsolicitedStatusInformation> builder = stateObject
-                .withStatusInformation(new TimeOfDayClockFailure(clockDeviceStatus, errorSeverity, null));
+                .withStatusInformation(new TimeOfDayClock(clockDeviceStatus, errorSeverity, null));
 
-        @SuppressWarnings("unchecked") final UnsolicitedStatusMessage<TimeOfDayClockFailure> timeOfDayClockFailureMessage
-                = (UnsolicitedStatusMessage<TimeOfDayClockFailure>) builder.build();
+        @SuppressWarnings("unchecked") final UnsolicitedStatusMessage<TimeOfDayClock> timeOfDayClockFailureMessage
+                = (UnsolicitedStatusMessage<TimeOfDayClock>) builder.build();
 
-        messageListener.onTimeOfDayClockFailureMessage(timeOfDayClockFailureMessage);
+        messageListener.onTimeOfDayClockStatusMessage(timeOfDayClockFailureMessage);
     }
 
     private ClockDeviceStatus readDeviceStatus(NdcCharBuffer ndcCharBuffer) {

@@ -1,4 +1,4 @@
-package io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.timeofdayclock;
+package io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.powerfailure;
 
 import io.github.jokoroukwu.jndc.NdcCharBuffer;
 import io.github.jokoroukwu.jndc.terminal.*;
@@ -10,10 +10,10 @@ import org.testng.annotations.Test;
 
 import java.util.Set;
 
-public class TimeOfDayClockIntegrationTest implements TerminalMessageListener, DeviceConfigurationSupplier<TerminalMessageMeta> {
+public class PowerFailureMessageIntegrationTest implements TerminalMessageListener, DeviceConfigurationSupplier<TerminalMessageMeta> {
     private final TerminalMessagePreProcessor messagePreProcessor = new TerminalMessagePreProcessor(this, this);
-    private final String rawMessage = "12\u001C324123456\u001C\u001CA24";
-    private UnsolicitedStatusMessage<TimeOfDayClock> message;
+    private final String rawMessage = "12\u001C324123456\u001C\u001CB0000";
+    private UnsolicitedStatusMessage<PowerFailure> message;
     private NdcCharBuffer buffer;
 
     @BeforeClass
@@ -23,7 +23,7 @@ public class TimeOfDayClockIntegrationTest implements TerminalMessageListener, D
     }
 
     @Override
-    public void onTimeOfDayClockStatusMessage(UnsolicitedStatusMessage<TimeOfDayClock> message) {
+    public void onPowerFailureMessage(UnsolicitedStatusMessage<PowerFailure> message) {
         this.message = message;
     }
 

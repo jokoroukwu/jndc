@@ -7,32 +7,51 @@ import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedM
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusMessage;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusMessageBuilder;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
 public class TimeOfDayClockAppenderTest extends UnsolicitedMessageAppenderTest {
-    private TimeOfDayClockFailureAppender appender;
+    private TimeOfDayClockMessageAppender appender;
     private TimeOfDayClockFailureMessageListener messageListenerMock;
+    private NdcCharBuffer buffer;
 
     @BeforeClass
     public void setUp() {
         messageListenerMock = mock(TimeOfDayClockFailureMessageListener.class);
-        appender = new TimeOfDayClockFailureAppender(messageListenerMock);
+        appender = new TimeOfDayClockMessageAppender(messageListenerMock, trailingDataCheckerMock);
+        when(trailingDataCheckerMock.getErrorMessageOnTrailingData(any()))
+                .thenReturn(Optional.empty());
+    }
+
+    @BeforeMethod
+    public void beforeMethod() {
+        buffer = NdcCharBuffer.wrap(ClockDeviceStatus.RESET.toNdcString() + ErrorSeverity.FATAL.toNdcString());
+        appender.appendComponent(buffer, messageBuilder, deviceConfigurationMock);
     }
 
     @Test
     public void should_call_message_listener_with_expected_arg() {
-        final NdcCharBuffer buffer = NdcCharBuffer.wrap(ClockDeviceStatus.RESET.toNdcString() + ErrorSeverity.FATAL.toNdcString());
-        appender.appendComponent(buffer, messageBuilder, deviceConfigurationMock);
-
-        final UnsolicitedStatusMessage<TimeOfDayClockFailure> expectedMessage = new UnsolicitedStatusMessageBuilder<TimeOfDayClockFailure>()
+        final UnsolicitedStatusMessage<TimeOfDayClock> expectedMessage = new UnsolicitedStatusMessageBuilder<TimeOfDayClock>()
                 .withLuno(Luno.DEFAULT)
-                .withStatusInformation(new TimeOfDayClockFailure(ClockDeviceStatus.RESET, ErrorSeverity.FATAL))
+                .withStatusInformation(new TimeOfDayClock(ClockDeviceStatus.RESET, ErrorSeverity.FATAL))
                 .build();
 
         verify(messageListenerMock, times(1))
-                .onTimeOfDayClockFailureMessage(expectedMessage);
+                .onTimeOfDayClockStatusMessage(expectedMessage);
+    }
+
+    @Test
+    public void should_not_interact_with_device_configuration() {
         verifyNoInteractions(deviceConfigurationMock);
+    }
+
+    @Test
+    public void should_call_trailing_data_checker() {
+        verify(trailingDataCheckerMock, times(1))
+                .getErrorMessageOnTrailingData(buffer);
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class SolicitedCardReaderWriterFaultAppenderTest extends DeviceFaultTest {
+public class SolicitedCardReaderWriterFaultAppenderTest extends DeviceStatusInformationTest {
     private final SolicitedStatusMessageBuilder<SolicitedStatusInformation> solicitedStatusMessageBuilder
             = new SolicitedStatusMessageBuilder<>()
             .withLuno(Luno.DEFAULT)
