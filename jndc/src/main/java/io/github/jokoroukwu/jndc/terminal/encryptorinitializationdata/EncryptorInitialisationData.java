@@ -7,13 +7,12 @@ import io.github.jokoroukwu.jndc.terminal.TerminalOriginatedMessage;
 import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
 import io.github.jokoroukwu.jndc.util.ObjectUtils;
 
-public class EncryptorInitialisationData<V extends EncryptorInformation> extends TerminalOriginatedMessage {
+public class EncryptorInitialisationData<V extends EncryptorInformation> implements TerminalOriginatedMessage {
     public static final String COMMAND_NAME = TerminalMessageClass.SOLICITED + ": " + TerminalMessageSubClass.ENCRYPTOR_INITIALISATION_DATA;
     private final Luno luno;
     private final V encryptorInfo;
 
     public EncryptorInitialisationData(Luno luno, V encryptorInfo) {
-        super(TerminalMessageClass.SOLICITED, TerminalMessageSubClass.ENCRYPTOR_INITIALISATION_DATA);
         this.luno = ObjectUtils.validateNotNull(luno, "'LUNO'");
         this.encryptorInfo = ObjectUtils.validateNotNull(encryptorInfo, "encryptorInfo");
     }
@@ -28,6 +27,16 @@ public class EncryptorInitialisationData<V extends EncryptorInformation> extends
                 .withEncryptorInfo(encryptorInfo);
     }
 
+    @Override
+    public TerminalMessageClass getMessageClass() {
+        return TerminalMessageClass.SOLICITED;
+    }
+
+    @Override
+    public TerminalMessageSubClass getMessageSubclass() {
+        return TerminalMessageSubClass.ENCRYPTOR_INITIALISATION_DATA;
+    }
+
     public Luno getLuno() {
         return luno;
     }
@@ -39,7 +48,8 @@ public class EncryptorInitialisationData<V extends EncryptorInformation> extends
     @Override
     public String toNdcString() {
         return new NdcStringBuilder(128)
-                .append(super.toNdcString())
+                .appendComponent(TerminalMessageClass.SOLICITED)
+                .appendComponent(TerminalMessageSubClass.ENCRYPTOR_INITIALISATION_DATA)
                 .appendFs()
                 .appendComponent(luno)
                 .appendFs()

@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.StringJoiner;
 
-public class SolicitedStatusMessage<V extends SolicitedStatusInformation> extends TerminalOriginatedMessage {
+public class SolicitedStatusMessage<V extends SolicitedStatusInformation> implements TerminalOriginatedMessage {
     public static final String COMMAND_NAME = TerminalMessageClass.SOLICITED + ": " + TerminalMessageSubClass.STATUS_MESSAGE;
     private final Luno luno;
     private final long timeVariantNumber;
@@ -29,7 +29,6 @@ public class SolicitedStatusMessage<V extends SolicitedStatusInformation> extend
                                   CompletionData completionData,
                                   V statusInformation,
                                   String mac) {
-        super(TerminalMessageClass.SOLICITED, TerminalMessageSubClass.STATUS_MESSAGE);
         this.luno = ObjectUtils.validateNotNull(luno, "LUNO");
         this.statusDescriptor = ObjectUtils.validateNotNull(statusDescriptor, "statusDescriptor");
         this.mac = MacReaderBase.validateMac(mac);
@@ -49,6 +48,16 @@ public class SolicitedStatusMessage<V extends SolicitedStatusInformation> extend
                 .withStatusDescriptor(statusDescriptor)
                 .withStatusInformation(statusInformation)
                 .withMac(mac);
+    }
+
+    @Override
+    public TerminalMessageClass getMessageClass() {
+        return TerminalMessageClass.SOLICITED;
+    }
+
+    @Override
+    public TerminalMessageSubClass getMessageSubclass() {
+        return TerminalMessageSubClass.STATUS_MESSAGE;
     }
 
     public Luno getLuno() {
@@ -78,7 +87,8 @@ public class SolicitedStatusMessage<V extends SolicitedStatusInformation> extend
     @Override
     public String toNdcString() {
         final NdcStringBuilder builder = new NdcStringBuilder(128)
-                .append(super.toNdcString())
+                .appendComponent(TerminalMessageClass.SOLICITED)
+                .appendComponent(TerminalMessageSubClass.STATUS_MESSAGE)
                 .appendFs()
                 .appendComponent(luno)
                 .appendFs()
@@ -101,8 +111,8 @@ public class SolicitedStatusMessage<V extends SolicitedStatusInformation> extend
     @Override
     public String toString() {
         return new StringJoiner(", ", SolicitedStatusMessage.class.getSimpleName() + ": {", "}")
-                .add("messageClass: " + messageClass)
-                .add("messageSubClass: " + messageSubclass)
+                .add("messageClass: " + TerminalMessageClass.SOLICITED)
+                .add("messageSubClass: " + TerminalMessageSubClass.STATUS_MESSAGE)
                 .add("luno: " + luno)
                 .add("timeVariantNumber: '" + timeVariantNumber + "'")
                 .add("statusDescriptor: " + statusDescriptor)
@@ -117,9 +127,7 @@ public class SolicitedStatusMessage<V extends SolicitedStatusInformation> extend
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SolicitedStatusMessage<?> that = (SolicitedStatusMessage<?>) o;
-        return messageClass == that.messageClass &&
-                messageSubclass == that.messageSubclass &&
-                ((timeVariantNumber < 0 && that.timeVariantNumber < 0) || timeVariantNumber == that.timeVariantNumber) &&
+        return ((timeVariantNumber < 0 && that.timeVariantNumber < 0) || timeVariantNumber == that.timeVariantNumber) &&
                 statusDescriptor == that.statusDescriptor &&
                 mac.equals(that.mac) &&
                 luno.equals(that.luno) &&
@@ -129,8 +137,7 @@ public class SolicitedStatusMessage<V extends SolicitedStatusInformation> extend
 
     @Override
     public int hashCode() {
-        return Objects.hash(messageClass,
-                messageSubclass,
+        return Objects.hash(
                 luno,
                 Math.max(timeVariantNumber, -1),
                 statusDescriptor,
