@@ -10,13 +10,12 @@ import io.github.jokoroukwu.jndc.util.ObjectUtils;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class UnsolicitedStatusMessage<V extends UnsolicitedStatusInformation> extends TerminalOriginatedMessage {
+public class UnsolicitedStatusMessage<V extends UnsolicitedStatusInformation> implements TerminalOriginatedMessage {
     public static final String COMMAND_NAME = TerminalMessageClass.UNSOLICITED + ": " + TerminalMessageSubClass.STATUS_MESSAGE;
     private final Luno luno;
     private final V statusInformation;
 
     public UnsolicitedStatusMessage(Luno luno, V statusInformation) {
-        super(TerminalMessageClass.UNSOLICITED, TerminalMessageSubClass.STATUS_MESSAGE);
         this.luno = ObjectUtils.validateNotNull(luno, "'LUNO'");
         this.statusInformation = ObjectUtils.validateNotNull(statusInformation, "'Status Information'");
     }
@@ -31,6 +30,16 @@ public class UnsolicitedStatusMessage<V extends UnsolicitedStatusInformation> ex
                 .withStatusInformation(statusInformation);
     }
 
+    @Override
+    public TerminalMessageClass getMessageClass() {
+        return TerminalMessageClass.UNSOLICITED;
+    }
+
+    @Override
+    public TerminalMessageSubClass getMessageSubclass() {
+        return TerminalMessageSubClass.STATUS_MESSAGE;
+    }
+
     public Luno getLuno() {
         return luno;
     }
@@ -42,7 +51,8 @@ public class UnsolicitedStatusMessage<V extends UnsolicitedStatusInformation> ex
     @Override
     public String toNdcString() {
         return new NdcStringBuilder(128)
-                .append(super.toNdcString())
+                .appendComponent(TerminalMessageClass.UNSOLICITED)
+                .appendComponent(TerminalMessageSubClass.STATUS_MESSAGE)
                 .appendFs()
                 .appendComponent(luno)
                 .appendFs()
@@ -54,8 +64,8 @@ public class UnsolicitedStatusMessage<V extends UnsolicitedStatusInformation> ex
     @Override
     public String toString() {
         return new StringJoiner(", ", UnsolicitedStatusMessage.class.getSimpleName() + ": {", "}")
-                .add("messageClass: " + messageClass)
-                .add("messageSubclass: " + messageSubclass)
+                .add("messageClass: " + TerminalMessageClass.UNSOLICITED)
+                .add("messageSubclass: " + TerminalMessageSubClass.STATUS_MESSAGE)
                 .add("luno: " + luno)
                 .add("statusInformation: " + statusInformation)
                 .toString();
@@ -73,5 +83,4 @@ public class UnsolicitedStatusMessage<V extends UnsolicitedStatusInformation> ex
     public int hashCode() {
         return Objects.hash(luno, statusInformation);
     }
-
 }

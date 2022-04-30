@@ -27,7 +27,7 @@ import io.github.jokoroukwu.jndc.util.ObjectUtils;
 
 import java.util.*;
 
-public class TransactionRequestMessage extends TerminalOriginatedMessage {
+public class TransactionRequestMessage implements TerminalOriginatedMessage {
     public static final String COMMAND_NAME = TerminalMessageClass.UNSOLICITED
             + ": " + TerminalMessageSubClass.TRANSACTION_REQUEST_MESSAGE;
     protected final Luno luno;
@@ -84,7 +84,6 @@ public class TransactionRequestMessage extends TerminalOriginatedMessage {
                                      VoiceGuidanceBuffer voiceGuidanceBuffer,
                                      Map<Character, IdentifiableBuffer> exitsBufferMap,
                                      LinkedHashMap<Character, IdentifiableBuffer> optionalDataFieldsMap, String mac) {
-        super(TerminalMessageClass.UNSOLICITED, TerminalMessageSubClass.TRANSACTION_REQUEST_MESSAGE);
         this.luno = ObjectUtils.validateNotNull(luno, "'LUNO'");
         this.timeVariantNumber = timeVariantNumber;
         this.isTopOfReceipt = isTopOfReceipt;
@@ -143,7 +142,6 @@ public class TransactionRequestMessage extends TerminalOriginatedMessage {
                               LinkedHashMap<Character, IdentifiableBuffer> optionalDataFieldsMap,
                               String mac,
                               Void unused) {
-        super(TerminalMessageClass.UNSOLICITED, TerminalMessageSubClass.TRANSACTION_REQUEST_MESSAGE);
         this.luno = luno;
         this.timeVariantNumber = timeVariantNumber;
         this.isTopOfReceipt = isTopOfReceipt;
@@ -202,6 +200,16 @@ public class TransactionRequestMessage extends TerminalOriginatedMessage {
                 .withExitsBufferMap(exitsBufferMap)
                 .withOptionalDataFieldsMap(optionalDataFieldsMap)
                 .withMac(mac);
+    }
+
+    @Override
+    public TerminalMessageClass getMessageClass() {
+        return TerminalMessageClass.UNSOLICITED;
+    }
+
+    @Override
+    public TerminalMessageSubClass getMessageSubclass() {
+        return TerminalMessageSubClass.TRANSACTION_REQUEST_MESSAGE;
     }
 
     public Luno getLuno() {
@@ -319,9 +327,9 @@ public class TransactionRequestMessage extends TerminalOriginatedMessage {
 
     @Override
     public String toNdcString() {
-        final String meta = super.toNdcString();
-        final NdcStringBuilder builder = new NdcStringBuilder(256 + meta.length())
-                .append(meta)
+        final NdcStringBuilder builder = new NdcStringBuilder(256)
+                .appendComponent(TerminalMessageClass.UNSOLICITED)
+                .appendComponent(TerminalMessageSubClass.TRANSACTION_REQUEST_MESSAGE)
                 .appendFs()
                 .appendComponent(luno)
                 .appendFs()
@@ -399,8 +407,8 @@ public class TransactionRequestMessage extends TerminalOriginatedMessage {
     @Override
     public String toString() {
         return new StringJoiner(", ", TransactionRequestMessage.class.getSimpleName() + ": {", "}")
-                .add("messageClass: " + messageClass)
-                .add("messageSubclass: " + messageSubclass)
+                .add("messageClass: " + TerminalMessageClass.UNSOLICITED)
+                .add("messageSubclass: " + TerminalMessageSubClass.TRANSACTION_REQUEST_MESSAGE)
                 .add("luno: " + luno)
                 .add("timeVariantNumber: " + timeVariantNumber)
                 .add("isTopOfReceipt: " + isTopOfReceipt)
@@ -509,5 +517,4 @@ public class TransactionRequestMessage extends TerminalOriginatedMessage {
         Integers.validateRange(value.length(), 0, 32, name + " length");
         return value;
     }
-
 }
