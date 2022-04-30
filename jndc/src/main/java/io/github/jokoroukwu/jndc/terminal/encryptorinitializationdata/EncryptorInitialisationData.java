@@ -7,8 +7,13 @@ import io.github.jokoroukwu.jndc.terminal.TerminalOriginatedMessage;
 import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
 import io.github.jokoroukwu.jndc.util.ObjectUtils;
 
+import java.util.Objects;
+import java.util.StringJoiner;
+
 public class EncryptorInitialisationData<V extends EncryptorInformation> implements TerminalOriginatedMessage {
-    public static final String COMMAND_NAME = TerminalMessageClass.SOLICITED + ": " + TerminalMessageSubClass.ENCRYPTOR_INITIALISATION_DATA;
+    public static final String COMMAND_NAME = TerminalMessageClass.SOLICITED
+            + ": " + TerminalMessageSubClass.ENCRYPTOR_INITIALISATION_DATA;
+
     private final Luno luno;
     private final V encryptorInfo;
 
@@ -46,6 +51,16 @@ public class EncryptorInitialisationData<V extends EncryptorInformation> impleme
     }
 
     @Override
+    public String toString() {
+        return new StringJoiner(", ", EncryptorInitialisationData.class.getSimpleName() + ": {", "}")
+                .add("messageClass: " + TerminalMessageClass.SOLICITED)
+                .add("messageSubclass: " + TerminalMessageSubClass.ENCRYPTOR_INITIALISATION_DATA)
+                .add("luno: " + luno)
+                .add("encryptorInfo: " + encryptorInfo)
+                .toString();
+    }
+
+    @Override
     public String toNdcString() {
         return new NdcStringBuilder(128)
                 .appendComponent(TerminalMessageClass.SOLICITED)
@@ -57,4 +72,18 @@ public class EncryptorInitialisationData<V extends EncryptorInformation> impleme
                 .appendComponent(encryptorInfo)
                 .toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EncryptorInitialisationData<?> that = (EncryptorInitialisationData<?>) o;
+        return luno.equals(that.luno) && encryptorInfo.equals(that.encryptorInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(luno, encryptorInfo);
+    }
+
 }
