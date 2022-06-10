@@ -11,8 +11,7 @@ import io.github.jokoroukwu.jndc.trailingdata.TrailingDataChecker;
 import io.github.jokoroukwu.jndc.trailingdata.TrailingDataCheckerBase;
 import io.github.jokoroukwu.jndc.util.ObjectUtils;
 
-import static io.github.jokoroukwu.jndc.exception.NdcMessageParseException.onMessageParseError;
-import static io.github.jokoroukwu.jndc.exception.NdcMessageParseException.withMessage;
+import static io.github.jokoroukwu.jndc.exception.NdcMessageParseException.*;
 import static io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.timeofdayclock.TimeOfDayClock.COMMAND_NAME;
 
 public class TimeOfDayClockMessageAppender implements ConfigurableNdcComponentAppender<UnsolicitedStatusMessageBuilder<UnsolicitedStatusInformation>> {
@@ -55,6 +54,8 @@ public class TimeOfDayClockMessageAppender implements ConfigurableNdcComponentAp
     }
 
     private ErrorSeverity readErrorSeverity(NdcCharBuffer ndcCharBuffer) {
+        ndcCharBuffer.trySkipFieldSeparator()
+                .ifPresent(errorMessage -> onNoFieldSeparator(COMMAND_NAME, "'Error Severity'", errorMessage, ndcCharBuffer));
         return ndcCharBuffer.tryReadNextChar()
                 .flatMapToObject(ErrorSeverity::forValue)
                 .getOrThrow(errorMessage -> withMessage(COMMAND_NAME, "'Error Severity'", errorMessage, ndcCharBuffer));
