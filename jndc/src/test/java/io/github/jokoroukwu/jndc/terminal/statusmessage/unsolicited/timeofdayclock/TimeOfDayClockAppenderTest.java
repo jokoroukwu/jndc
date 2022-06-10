@@ -6,6 +6,7 @@ import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.ErrorSeverit
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedMessageAppenderTest;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusMessage;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusMessageBuilder;
+import io.github.jokoroukwu.jndc.util.NdcConstants;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -29,7 +30,7 @@ public class TimeOfDayClockAppenderTest extends UnsolicitedMessageAppenderTest {
 
     @BeforeMethod
     public void beforeMethod() {
-        buffer = NdcCharBuffer.wrap(ClockDeviceStatus.RESET.toNdcString() + ErrorSeverity.FATAL.toNdcString());
+        buffer = NdcCharBuffer.wrap(ClockDeviceStatus.RESET.toNdcString() + NdcConstants.FIELD_SEPARATOR + ErrorSeverity.FATAL.toNdcString());
         appender.appendComponent(buffer, messageBuilder, deviceConfigurationMock);
     }
 
