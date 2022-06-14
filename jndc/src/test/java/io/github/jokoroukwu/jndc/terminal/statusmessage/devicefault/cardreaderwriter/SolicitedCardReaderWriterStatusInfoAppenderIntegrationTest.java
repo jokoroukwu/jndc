@@ -38,7 +38,7 @@ public class SolicitedCardReaderWriterStatusInfoAppenderIntegrationTest extends 
     private final ErrorSeverity dummyErrorSeverity = ErrorSeverity.NO_ERROR;
     private final DiagnosticStatus dummyDiagnosticStatus = new DiagnosticStatus(1, BmpStringGenerator.HEX.fixedLength(2));
     private final SuppliesStatus dummySuppliesStatus = SuppliesStatus.GOOD_STATE;
-    private final TransactionDeviceStatus dummyTransactionStatus = TransactionDeviceStatus.NO_EXCEPTION;
+    private final CardReaderWriterStatus dummyTransactionStatus = CardReaderWriterStatus.NO_EXCEPTION;
     private SolicitedCardReaderWriterStatusInfoMessageListener messageListenerMock;
     private ConfigurableNdcComponentAppender<SolicitedStatusMessageBuilder<?>> macAppenderMock;
 
@@ -104,7 +104,7 @@ public class SolicitedCardReaderWriterStatusInfoAppenderIntegrationTest extends 
     @Test(dataProvider = "validDataProvider")
     public void should_append_expected_result(String unusedDescription,
                                               String validData,
-                                              TransactionDeviceStatus transactionStatus,
+                                              CardReaderWriterStatus transactionStatus,
                                               List<ErrorSeverity> errorSeverities,
                                               DiagnosticStatus diagnosticStatus,
                                               CompletionData completionData,

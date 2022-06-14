@@ -43,14 +43,14 @@ public class SolicitedCardReaderWriterStatusInfoAppenderTest extends DeviceStatu
 
     @Test
     public void should_append_expected_value() {
-        final TransactionDeviceStatus transactionDeviceStatus = TransactionDeviceStatus.CARD_EJECT_FAILURE;
+        final CardReaderWriterStatus cardReaderWriterStatus = CardReaderWriterStatus.CARD_EJECT_FAILURE;
         final List<ErrorSeverity> errorSeverities = List.of(ErrorSeverity.NO_ERROR, ErrorSeverity.ROUTINE);
         final DiagnosticStatus diagnosticStatus = new DiagnosticStatus(1, BmpStringGenerator.HEX.fixedLength(2));
         final SuppliesStatus suppliesStatus = SuppliesStatus.OVERFILL;
         final String mac = BmpStringGenerator.HEX.fixedLength(8);
         final FakeMacAppender<SolicitedStatusMessageBuilder<?>> fakeMacAppender = new FakeMacAppender<>(mac);
         final FakeFieldAppender fakeFieldAppender = new FakeFieldAppender(
-                transactionDeviceStatus,
+                cardReaderWriterStatus,
                 errorSeverities,
                 suppliesStatus,
                 dummyCompletionData,
@@ -66,11 +66,11 @@ public class SolicitedCardReaderWriterStatusInfoAppenderTest extends DeviceStatu
                 .withStatusDescriptor(StatusDescriptor.DEVICE_FAULT)
                 .withCompletionData(null)
                 .withStatusInformation(new CardReaderStatusInfoBuilder()
-                        .withTransactionDeviceStatus(transactionDeviceStatus)
+                        .withTransactionDeviceStatus(cardReaderWriterStatus)
                         .withErrorSeverities(errorSeverities)
                         .withDiagnosticStatus(diagnosticStatus)
                         .withCompletionData(dummyCompletionData)
-                        .withTransactionDeviceStatus(transactionDeviceStatus)
+                        .withTransactionDeviceStatus(cardReaderWriterStatus)
                         .withSuppliesStatus(suppliesStatus)
                         .build())
                 .withMac(mac)
@@ -96,18 +96,18 @@ public class SolicitedCardReaderWriterStatusInfoAppenderTest extends DeviceStatu
     }
 
     private static final class FakeFieldAppender implements ConfigurableNdcComponentAppender<CardReaderStatusInfoBuilder> {
-        private final TransactionDeviceStatus transactionDeviceStatus;
+        private final CardReaderWriterStatus cardReaderWriterStatus;
         private final List<ErrorSeverity> errorSeverities;
         private final SuppliesStatus suppliesStatus;
         private final CompletionData completionData;
         private final DiagnosticStatus diagnosticStatus;
 
-        private FakeFieldAppender(TransactionDeviceStatus transactionDeviceStatus,
+        private FakeFieldAppender(CardReaderWriterStatus cardReaderWriterStatus,
                                   List<ErrorSeverity> errorSeverities,
                                   SuppliesStatus suppliesStatus,
                                   CompletionData completionData,
                                   DiagnosticStatus diagnosticStatus) {
-            this.transactionDeviceStatus = transactionDeviceStatus;
+            this.cardReaderWriterStatus = cardReaderWriterStatus;
             this.errorSeverities = errorSeverities;
             this.suppliesStatus = suppliesStatus;
             this.completionData = completionData;
@@ -116,7 +116,7 @@ public class SolicitedCardReaderWriterStatusInfoAppenderTest extends DeviceStatu
 
         @Override
         public void appendComponent(NdcCharBuffer ndcCharBuffer, CardReaderStatusInfoBuilder stateObject, DeviceConfiguration deviceConfiguration) {
-            stateObject.withTransactionDeviceStatus(transactionDeviceStatus)
+            stateObject.withTransactionDeviceStatus(cardReaderWriterStatus)
                     .withErrorSeverities(errorSeverities)
                     .withSuppliesStatus(suppliesStatus)
                     .withCompletionData(completionData)

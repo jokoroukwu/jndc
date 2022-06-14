@@ -30,7 +30,7 @@ public class TimeOfDayClockAppenderTest extends UnsolicitedMessageAppenderTest {
 
     @BeforeMethod
     public void beforeMethod() {
-        buffer = NdcCharBuffer.wrap(ClockDeviceStatus.RESET.toNdcString() + NdcConstants.FIELD_SEPARATOR + ErrorSeverity.FATAL.toNdcString());
+        buffer = NdcCharBuffer.wrap(ClockStatus.RESET.toNdcString() + NdcConstants.FIELD_SEPARATOR + ErrorSeverity.FATAL.toNdcString());
         appender.appendComponent(buffer, messageBuilder, deviceConfigurationMock);
     }
 
@@ -38,7 +38,7 @@ public class TimeOfDayClockAppenderTest extends UnsolicitedMessageAppenderTest {
     public void should_call_message_listener_with_expected_arg() {
         final UnsolicitedStatusMessage<TimeOfDayClock> expectedMessage = new UnsolicitedStatusMessageBuilder<TimeOfDayClock>()
                 .withLuno(Luno.DEFAULT)
-                .withStatusInformation(new TimeOfDayClock(ClockDeviceStatus.RESET, ErrorSeverity.FATAL))
+                .withStatusInformation(new TimeOfDayClock(ClockStatus.RESET, ErrorSeverity.FATAL))
                 .build();
 
         verify(messageListenerMock, times(1))

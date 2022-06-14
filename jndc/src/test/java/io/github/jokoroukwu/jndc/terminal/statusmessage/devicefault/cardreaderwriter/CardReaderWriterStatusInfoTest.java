@@ -4,8 +4,8 @@ import io.github.jokoroukwu.jndc.terminal.completiondata.CompletionData;
 import io.github.jokoroukwu.jndc.terminal.dig.Dig;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.DeviceStatusInformationTest;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderStatusInfoBuilder;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderWriterStatus;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderWriterStatusInfo;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.TransactionDeviceStatus;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.ErrorSeverity;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.SuppliesStatus;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.diagnosticstatus.DiagnosticStatus;
@@ -22,7 +22,7 @@ public class CardReaderWriterStatusInfoTest extends DeviceStatusInformationTest 
 
     private final ErrorSeverity dummyErrorSeverity = ErrorSeverity.NO_ERROR;
     private final DiagnosticStatus dummyDiagnosticStatus = new DiagnosticStatus(1, BmpStringGenerator.HEX.fixedLength(2));
-    private final TransactionDeviceStatus dummyTransactionStatus = TransactionDeviceStatus.NO_EXCEPTION;
+    private final CardReaderWriterStatus dummyTransactionStatus = CardReaderWriterStatus.NO_EXCEPTION;
 
     @DataProvider
     public Object[][] validDataProvider() {
@@ -69,7 +69,7 @@ public class CardReaderWriterStatusInfoTest extends DeviceStatusInformationTest 
     @Test(dataProvider = "validDataProvider")
     public void should_return_expected_ndc_string(String unusedDescription,
                                                   String expectedString,
-                                                  TransactionDeviceStatus transactionStatus,
+                                                  CardReaderWriterStatus transactionStatus,
                                                   List<ErrorSeverity> errorSeverities,
                                                   DiagnosticStatus diagnosticStatus,
                                                   CompletionData completionData,
