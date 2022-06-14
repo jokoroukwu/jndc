@@ -7,9 +7,9 @@ import io.github.jokoroukwu.jndc.terminal.ConfigurableNdcComponentAppender;
 import io.github.jokoroukwu.jndc.terminal.DeviceConfiguration;
 import io.github.jokoroukwu.jndc.terminal.completiondata.CompletionData;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.*;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.*;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.ErrorSeverity;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.SuppliesStatus;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.*;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.diagnosticstatus.DiagnosticStatus;
 import io.github.jokoroukwu.jndc.util.NdcConstants;
 import io.github.jokoroukwu.jndc.util.text.stringgenerator.BmpStringGenerator;
@@ -20,7 +20,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class SolicitedCardReaderWriterFaultAppenderTest extends DeviceStatusInformationTest {
+public class SolicitedCardReaderWriterStatusInfoAppenderTest extends DeviceStatusInformationTest {
     private final SolicitedStatusMessageBuilder<SolicitedStatusInformation> solicitedStatusMessageBuilder
             = new SolicitedStatusMessageBuilder<>()
             .withLuno(Luno.DEFAULT)
@@ -28,8 +28,8 @@ public class SolicitedCardReaderWriterFaultAppenderTest extends DeviceStatusInfo
             .withStatusDescriptor(StatusDescriptor.DEVICE_FAULT);
 
     private ConfigurableNdcComponentAppender<SolicitedStatusMessageBuilder<?>> macAppender;
-    private ConfigurableNdcComponentAppender<CardReaderWriterFaultBuilder> fieldAppender;
-    private SolicitedCardReaderWriterFaultMessageListener messageListenerMock;
+    private ConfigurableNdcComponentAppender<CardReaderStatusInfoBuilder> fieldAppender;
+    private SolicitedCardReaderWriterStatusInfoMessageListener messageListenerMock;
 
 
     @BeforeMethod
@@ -37,7 +37,7 @@ public class SolicitedCardReaderWriterFaultAppenderTest extends DeviceStatusInfo
     public void setUp() {
         macAppender = mock(ConfigurableNdcComponentAppender.class);
         fieldAppender = mock(ConfigurableNdcComponentAppender.class);
-        messageListenerMock = mock(SolicitedCardReaderWriterFaultMessageListener.class);
+        messageListenerMock = mock(SolicitedCardReaderWriterStatusInfoMessageListener.class);
     }
 
 
@@ -57,15 +57,15 @@ public class SolicitedCardReaderWriterFaultAppenderTest extends DeviceStatusInfo
                 diagnosticStatus
         );
         final NdcCharBuffer buffer = NdcCharBuffer.wrap(NdcConstants.FIELD_SEPARATOR_STRING);
-        new SolicitedCardReaderWriterFaultAppender(messageListenerMock, fakeFieldAppender, fakeMacAppender)
+        new SolicitedCardReaderWriterStatusInfoAppender(messageListenerMock, fakeFieldAppender, fakeMacAppender)
                 .appendComponent(buffer, solicitedStatusMessageBuilder, deviceConfigurationMock);
 
-        final SolicitedStatusMessage<CardReaderWriterFault> expectedMessage = SolicitedStatusMessage.<CardReaderWriterFault>builder()
+        final SolicitedStatusMessage<CardReaderWriterStatusInfo> expectedMessage = SolicitedStatusMessage.<CardReaderWriterStatusInfo>builder()
                 .withTimeVariantNumber(solicitedStatusMessageBuilder.getTimeVariantNumber())
                 .withLuno(solicitedStatusMessageBuilder.getLuno())
                 .withStatusDescriptor(StatusDescriptor.DEVICE_FAULT)
                 .withCompletionData(null)
-                .withStatusInformation(new CardReaderWriterFaultBuilder()
+                .withStatusInformation(new CardReaderStatusInfoBuilder()
                         .withTransactionDeviceStatus(transactionDeviceStatus)
                         .withErrorSeverities(errorSeverities)
                         .withDiagnosticStatus(diagnosticStatus)
@@ -77,7 +77,7 @@ public class SolicitedCardReaderWriterFaultAppenderTest extends DeviceStatusInfo
                 .build();
 
         verify(messageListenerMock, times(1))
-                .onSolicitedCardReaderWriterFaultMessage(expectedMessage);
+                .onSolicitedCardReaderWriterStatusInfoMessage(expectedMessage);
 
         verifyNoMoreInteractions(messageListenerMock);
     }
@@ -95,7 +95,7 @@ public class SolicitedCardReaderWriterFaultAppenderTest extends DeviceStatusInfo
         }
     }
 
-    private static final class FakeFieldAppender implements ConfigurableNdcComponentAppender<CardReaderWriterFaultBuilder> {
+    private static final class FakeFieldAppender implements ConfigurableNdcComponentAppender<CardReaderStatusInfoBuilder> {
         private final TransactionDeviceStatus transactionDeviceStatus;
         private final List<ErrorSeverity> errorSeverities;
         private final SuppliesStatus suppliesStatus;
@@ -115,7 +115,7 @@ public class SolicitedCardReaderWriterFaultAppenderTest extends DeviceStatusInfo
         }
 
         @Override
-        public void appendComponent(NdcCharBuffer ndcCharBuffer, CardReaderWriterFaultBuilder stateObject, DeviceConfiguration deviceConfiguration) {
+        public void appendComponent(NdcCharBuffer ndcCharBuffer, CardReaderStatusInfoBuilder stateObject, DeviceConfiguration deviceConfiguration) {
             stateObject.withTransactionDeviceStatus(transactionDeviceStatus)
                     .withErrorSeverities(errorSeverities)
                     .withSuppliesStatus(suppliesStatus)

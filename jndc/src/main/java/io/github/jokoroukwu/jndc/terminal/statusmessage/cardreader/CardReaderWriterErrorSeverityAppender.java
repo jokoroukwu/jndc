@@ -1,4 +1,4 @@
-package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader;
+package io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader;
 
 import io.github.jokoroukwu.jndc.NdcCharBuffer;
 import io.github.jokoroukwu.jndc.exception.NdcMessageParseException;
@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CardReaderWriterErrorSeverityAppender extends DeviceFaultFieldAppender<CardReaderWriterFaultBuilder> {
+public class CardReaderWriterErrorSeverityAppender extends DeviceFaultFieldAppender<CardReaderStatusInfoBuilder> {
     public static final int MAX_FIELD_LENGTH = 2;
     private final String commandName;
 
-    public CardReaderWriterErrorSeverityAppender(String commandName, ConfigurableNdcComponentAppender<CardReaderWriterFaultBuilder> nextAppender) {
+    public CardReaderWriterErrorSeverityAppender(String commandName, ConfigurableNdcComponentAppender<CardReaderStatusInfoBuilder> nextAppender) {
         super(nextAppender);
         this.commandName = ObjectUtils.validateNotNull(commandName, "commandName");
     }
@@ -27,16 +27,16 @@ public class CardReaderWriterErrorSeverityAppender extends DeviceFaultFieldAppen
         this(commandName, defaultAppender(commandName));
     }
 
-    private static ConfigurableNdcComponentAppender<CardReaderWriterFaultBuilder> defaultAppender(String commandName) {
+    private static ConfigurableNdcComponentAppender<CardReaderStatusInfoBuilder> defaultAppender(String commandName) {
         final CardReaderWriterSuppliesStatusAppender suppliesStatusAppender
                 = new CardReaderWriterSuppliesStatusAppender(commandName);
-        final CompletionDataAppender<CardReaderWriterFaultBuilder> completionDataAppender
+        final CompletionDataAppender<CardReaderStatusInfoBuilder> completionDataAppender
                 = new CompletionDataAppender<>(commandName, suppliesStatusAppender);
         return new DiagnosticStatusAppender<>(commandName, completionDataAppender);
     }
 
     @Override
-    public void appendComponent(NdcCharBuffer ndcCharBuffer, CardReaderWriterFaultBuilder stateObject, DeviceConfiguration deviceConfiguration) {
+    public void appendComponent(NdcCharBuffer ndcCharBuffer, CardReaderStatusInfoBuilder stateObject, DeviceConfiguration deviceConfiguration) {
         if (ndcCharBuffer.hasRemaining() && !hasFollowingMac(deviceConfiguration, ndcCharBuffer)) {
             //  at least field separator should be present
             ndcCharBuffer.trySkipFieldSeparator()

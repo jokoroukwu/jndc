@@ -6,11 +6,11 @@ import io.github.jokoroukwu.jndc.terminal.encryptorinitializationdata.generic.Ge
 import io.github.jokoroukwu.jndc.terminal.encryptorinitializationdata.newkvv.NewKvv;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.SolicitedStatusInformation;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.SolicitedStatusMessage;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderWriterStatusInfo;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.SolicitedCardReaderWriterStatusInfoMessageListener;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.UnsolicitedCardReaderWriterStatusInfoMessageListener;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.defaultstatusmessage.CommandRejectStatusMessageListener;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.defaultstatusmessage.ReadyStatusMessageListener;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterFault;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.SolicitedCardReaderWriterFaultMessageListener;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.UnsolicitedCardReaderWriterFaultMessageListener;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.genericfault.GenericDeviceFault;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.genericfault.SolicitedGenericDeviceFaultMessageListener;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.genericfault.UnsolicitedGenericDeviceFaultMessageListener;
@@ -31,10 +31,10 @@ import io.github.jokoroukwu.jndc.terminal.transactionrequestmessage.TransactionR
 import io.github.jokoroukwu.jndc.terminal.transactionrequestmessage.TransactionRequestMessageListener;
 
 public interface TerminalMessageListener extends TransactionRequestMessageListener, UnsolicitedGenericDeviceFaultMessageListener,
-        UnsolicitedCardReaderWriterFaultMessageListener, EncryptorInitialisationDataMessageListener,
+        UnsolicitedCardReaderWriterStatusInfoMessageListener, EncryptorInitialisationDataMessageListener,
         SupplyCountersBasicMessageListener, SupplyCountersExtendedMessageListener, ReadyBStatusMessageListener,
         CommandRejectStatusMessageListener, ReadyStatusMessageListener, GenericSolicitedStatusMessageListener,
-        SolicitedGenericDeviceFaultMessageListener, SolicitedCardReaderWriterFaultMessageListener, TimeOfDayClockFailureMessageListener,
+        SolicitedGenericDeviceFaultMessageListener, SolicitedCardReaderWriterStatusInfoMessageListener, TimeOfDayClockFailureMessageListener,
         PowerFailureMessageListener {
 
     @Override
@@ -47,7 +47,7 @@ public interface TerminalMessageListener extends TransactionRequestMessageListen
     }
 
     @Override
-    default void onSolicitedCardReaderWriterFaultMessage(SolicitedStatusMessage<CardReaderWriterFault> message) {
+    default void onSolicitedCardReaderWriterStatusInfoMessage(SolicitedStatusMessage<CardReaderWriterStatusInfo> message) {
 
     }
 
@@ -87,7 +87,7 @@ public interface TerminalMessageListener extends TransactionRequestMessageListen
     }
 
     @Override
-    default void onUnsolicitedCardReaderWriterStatusMessage(UnsolicitedStatusMessage<CardReaderWriterFault> message) {
+    default void onUnsolicitedCardReaderWriterStatusInfoMessage(UnsolicitedStatusMessage<CardReaderWriterStatusInfo> message) {
 
     }
 

@@ -3,7 +3,7 @@ package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault;
 import io.github.jokoroukwu.jndc.NdcCharBuffer;
 import io.github.jokoroukwu.jndc.terminal.ConfigurableNdcComponentAppender;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.DeviceStatusInformationTest;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterFaultBuilder;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderStatusInfoBuilder;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.diagnosticstatus.DiagnosticStatus;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.diagnosticstatus.DiagnosticStatusAppender;
 import io.github.jokoroukwu.jndc.util.NdcConstants;
@@ -20,16 +20,16 @@ import static org.mockito.Mockito.when;
 public class DiagnosticStatusAppenderTest extends DeviceStatusInformationTest {
     private final String minData = BmpStringGenerator.HEX.fixedLength(2);
     private final String arbitraryData = BmpStringGenerator.HEX.fixedLength(10);
-    private ConfigurableNdcComponentAppender<CardReaderWriterFaultBuilder> nextAppenderMock;
-    private CardReaderWriterFaultBuilder builder;
-    private DiagnosticStatusAppender<CardReaderWriterFaultBuilder> appender;
+    private ConfigurableNdcComponentAppender<CardReaderStatusInfoBuilder> nextAppenderMock;
+    private CardReaderStatusInfoBuilder builder;
+    private DiagnosticStatusAppender<CardReaderStatusInfoBuilder> appender;
 
     @BeforeMethod
     @SuppressWarnings("unchecked")
     public void setUp() {
         nextAppenderMock = mock(ConfigurableNdcComponentAppender.class);
         appender = new DiagnosticStatusAppender<>("commandName", nextAppenderMock);
-        builder = new CardReaderWriterFaultBuilder();
+        builder = new CardReaderStatusInfoBuilder();
     }
 
     @DataProvider

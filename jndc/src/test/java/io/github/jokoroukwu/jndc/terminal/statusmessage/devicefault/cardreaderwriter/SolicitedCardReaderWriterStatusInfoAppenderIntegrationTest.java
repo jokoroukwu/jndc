@@ -8,9 +8,9 @@ import io.github.jokoroukwu.jndc.terminal.completiondata.CompletionData;
 import io.github.jokoroukwu.jndc.terminal.completiondata.ProcessingResult;
 import io.github.jokoroukwu.jndc.terminal.completiondata.ScriptResult;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.*;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.*;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.ErrorSeverity;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.SuppliesStatus;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.*;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.diagnosticstatus.DiagnosticStatus;
 import io.github.jokoroukwu.jndc.tlv.TransactionCategoryCode;
 import io.github.jokoroukwu.jndc.util.NdcConstants;
@@ -25,7 +25,7 @@ import java.util.Map;
 import static io.github.jokoroukwu.jndc.util.text.Strings.EMPTY_STRING;
 import static org.mockito.Mockito.*;
 
-public class SolicitedCardReaderWriterFaultAppenderIntegrationTest extends DeviceStatusInformationTest {
+public class SolicitedCardReaderWriterStatusInfoAppenderIntegrationTest extends DeviceStatusInformationTest {
     private final SolicitedStatusMessageBuilder<SolicitedStatusInformation> solicitedStatusMessageBuilder
             = new SolicitedStatusMessageBuilder<>()
             .withLuno(Luno.DEFAULT)
@@ -39,18 +39,18 @@ public class SolicitedCardReaderWriterFaultAppenderIntegrationTest extends Devic
     private final DiagnosticStatus dummyDiagnosticStatus = new DiagnosticStatus(1, BmpStringGenerator.HEX.fixedLength(2));
     private final SuppliesStatus dummySuppliesStatus = SuppliesStatus.GOOD_STATE;
     private final TransactionDeviceStatus dummyTransactionStatus = TransactionDeviceStatus.NO_EXCEPTION;
-    private SolicitedCardReaderWriterFaultMessageListener messageListenerMock;
+    private SolicitedCardReaderWriterStatusInfoMessageListener messageListenerMock;
     private ConfigurableNdcComponentAppender<SolicitedStatusMessageBuilder<?>> macAppenderMock;
 
 
-    private SolicitedCardReaderWriterFaultAppender appender;
+    private SolicitedCardReaderWriterStatusInfoAppender appender;
 
     @BeforeMethod
     @SuppressWarnings("unchecked")
     public void setUp() {
-        messageListenerMock = mock(SolicitedCardReaderWriterFaultMessageListener.class);
+        messageListenerMock = mock(SolicitedCardReaderWriterStatusInfoMessageListener.class);
         macAppenderMock = mock(ConfigurableNdcComponentAppender.class);
-        appender = new SolicitedCardReaderWriterFaultAppender(messageListenerMock,
+        appender = new SolicitedCardReaderWriterStatusInfoAppender(messageListenerMock,
                 new CardReaderWriterTransactionStatusAppender("commandName"),
                 macAppenderMock);
 
@@ -111,12 +111,12 @@ public class SolicitedCardReaderWriterFaultAppenderIntegrationTest extends Devic
                                               SuppliesStatus suppliesStatuses) {
         final NdcCharBuffer buffer = NdcCharBuffer.wrap(validData);
         appender.appendComponent(buffer, solicitedStatusMessageBuilder, deviceConfigurationMock);
-        final SolicitedStatusMessage<CardReaderWriterFault> expectedMessage = SolicitedStatusMessage.<CardReaderWriterFault>builder()
+        final SolicitedStatusMessage<CardReaderWriterStatusInfo> expectedMessage = SolicitedStatusMessage.<CardReaderWriterStatusInfo>builder()
                 .withLuno(solicitedStatusMessageBuilder.getLuno())
                 .withTimeVariantNumber(solicitedStatusMessageBuilder.getTimeVariantNumber())
                 .withMac(EMPTY_STRING)
                 .withStatusDescriptor(StatusDescriptor.DEVICE_FAULT)
-                .withStatusInformation(new CardReaderWriterFaultBuilder()
+                .withStatusInformation(new CardReaderStatusInfoBuilder()
                         .withTransactionDeviceStatus(transactionStatus)
                         .withErrorSeverities(errorSeverities)
                         .withDiagnosticStatus(diagnosticStatus)
@@ -126,7 +126,7 @@ public class SolicitedCardReaderWriterFaultAppenderIntegrationTest extends Devic
                 .build();
 
         verify(messageListenerMock, times(1))
-                .onSolicitedCardReaderWriterFaultMessage(expectedMessage);
+                .onSolicitedCardReaderWriterStatusInfoMessage(expectedMessage);
         verify(macAppenderMock, times(1))
                 .appendComponent(any(), any(), any());
         verifyNoMoreInteractions(messageListenerMock, macAppenderMock);

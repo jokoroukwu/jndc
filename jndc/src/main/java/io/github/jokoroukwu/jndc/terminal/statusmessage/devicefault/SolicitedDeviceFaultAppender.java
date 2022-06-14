@@ -10,7 +10,7 @@ import io.github.jokoroukwu.jndc.terminal.TerminalMessageListener;
 import io.github.jokoroukwu.jndc.terminal.dig.Dig;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.SolicitedStatusInformation;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.SolicitedStatusMessageBuilder;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.SolicitedCardReaderWriterFaultAppender;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.SolicitedCardReaderWriterStatusInfoAppender;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.genericfault.SolicitedGenericDeviceFaultAppender;
 import io.github.jokoroukwu.jndc.util.ObjectUtils;
 
@@ -32,7 +32,7 @@ public class SolicitedDeviceFaultAppender
     public SolicitedDeviceFaultAppender(TerminalMessageListener messageListener) {
         final Map<Dig, ConfigurableNdcComponentAppender<SolicitedStatusMessageBuilder<SolicitedStatusInformation>>> appenderMap
                 = new EnumMap<>(Dig.class);
-        appenderMap.put(Dig.MAGNETIC_CARD_READER_WRITER, new SolicitedCardReaderWriterFaultAppender(messageListener));
+        appenderMap.put(Dig.MAGNETIC_CARD_READER_WRITER, new SolicitedCardReaderWriterStatusInfoAppender(messageListener));
         putGenericAppenders(appenderMap, messageListener);
         appenderFactory = new ConfigurableNdcComponentAppenderFactoryBase<>(appenderMap);
     }

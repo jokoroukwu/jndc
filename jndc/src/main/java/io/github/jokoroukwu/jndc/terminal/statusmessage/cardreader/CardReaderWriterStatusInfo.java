@@ -1,4 +1,4 @@
-package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader;
+package io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader;
 
 import io.github.jokoroukwu.jndc.terminal.completiondata.CompletionData;
 import io.github.jokoroukwu.jndc.terminal.dig.Dig;
@@ -13,7 +13,7 @@ import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
 
 import java.util.*;
 
-public class CardReaderWriterFault implements DeviceStatusInformation, SolicitedStatusInformation, UnsolicitedStatusInformation {
+public class CardReaderWriterStatusInfo implements DeviceStatusInformation, SolicitedStatusInformation, UnsolicitedStatusInformation {
     private final TransactionDeviceStatus transactionDeviceStatus;
     private final List<ErrorSeverity> errorSeverities;
     private final DiagnosticStatus diagnosticStatus;
@@ -21,12 +21,12 @@ public class CardReaderWriterFault implements DeviceStatusInformation, Solicited
     private final SuppliesStatus suppliesStatus;
     private final CardReaderWriterAdditionalData additionalData;
 
-    public CardReaderWriterFault(TransactionDeviceStatus transactionDeviceStatus,
-                                 Collection<ErrorSeverity> errorSeverities,
-                                 DiagnosticStatus diagnosticStatus,
-                                 CompletionData completionData,
-                                 SuppliesStatus suppliesStatus,
-                                 CardReaderWriterAdditionalData additionalData) {
+    public CardReaderWriterStatusInfo(TransactionDeviceStatus transactionDeviceStatus,
+                                      Collection<ErrorSeverity> errorSeverities,
+                                      DiagnosticStatus diagnosticStatus,
+                                      CompletionData completionData,
+                                      SuppliesStatus suppliesStatus,
+                                      CardReaderWriterAdditionalData additionalData) {
         this.errorSeverities = List.copyOf(errorSeverities);
         this.transactionDeviceStatus = transactionDeviceStatus;
         this.diagnosticStatus = diagnosticStatus;
@@ -35,11 +35,11 @@ public class CardReaderWriterFault implements DeviceStatusInformation, Solicited
         this.additionalData = additionalData;
     }
 
-    public CardReaderWriterFault(TransactionDeviceStatus transactionDeviceStatus,
-                                 Collection<ErrorSeverity> errorSeverities,
-                                 DiagnosticStatus diagnosticStatus,
-                                 CompletionData completionData,
-                                 SuppliesStatus suppliesStatus) {
+    public CardReaderWriterStatusInfo(TransactionDeviceStatus transactionDeviceStatus,
+                                      Collection<ErrorSeverity> errorSeverities,
+                                      DiagnosticStatus diagnosticStatus,
+                                      CompletionData completionData,
+                                      SuppliesStatus suppliesStatus) {
         this(transactionDeviceStatus, errorSeverities, diagnosticStatus, completionData, suppliesStatus, null);
     }
 
@@ -130,7 +130,7 @@ public class CardReaderWriterFault implements DeviceStatusInformation, Solicited
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", CardReaderWriterFault.class.getSimpleName() + ": {", "}")
+        return new StringJoiner(", ", CardReaderWriterStatusInfo.class.getSimpleName() + ": {", "}")
                 .add("transactionDeviceStatus: " + transactionDeviceStatus)
                 .add("errorSeverities: " + errorSeverities)
                 .add("diagnosticStatus: " + diagnosticStatus)
@@ -143,7 +143,7 @@ public class CardReaderWriterFault implements DeviceStatusInformation, Solicited
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CardReaderWriterFault that = (CardReaderWriterFault) o;
+        CardReaderWriterStatusInfo that = (CardReaderWriterStatusInfo) o;
         return transactionDeviceStatus == that.transactionDeviceStatus &&
                 suppliesStatus == that.suppliesStatus &&
                 Objects.equals(errorSeverities, that.errorSeverities) &&
