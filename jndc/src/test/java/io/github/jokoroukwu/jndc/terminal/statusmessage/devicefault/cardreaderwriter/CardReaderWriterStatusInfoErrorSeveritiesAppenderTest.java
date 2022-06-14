@@ -3,9 +3,9 @@ package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreaderw
 import io.github.jokoroukwu.jndc.NdcCharBuffer;
 import io.github.jokoroukwu.jndc.terminal.ConfigurableNdcComponentAppender;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.DeviceStatusInformationTest;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderStatusInfoBuilder;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderWriterErrorSeverityAppender;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.ErrorSeverity;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterErrorSeverityAppender;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterFaultBuilder;
 import io.github.jokoroukwu.jndc.util.NdcConstants;
 import io.github.jokoroukwu.jndc.util.text.stringgenerator.BmpStringGenerator;
 import org.assertj.core.api.Assertions;
@@ -19,17 +19,17 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CardReaderWriterFaultErrorSeveritiesAppenderTest extends DeviceStatusInformationTest {
+public class CardReaderWriterStatusInfoErrorSeveritiesAppenderTest extends DeviceStatusInformationTest {
 
     private CardReaderWriterErrorSeverityAppender appender;
-    private CardReaderWriterFaultBuilder builder;
+    private CardReaderStatusInfoBuilder builder;
 
     @BeforeMethod
     @SuppressWarnings("unchecked")
     public void setUp() {
-        final ConfigurableNdcComponentAppender<CardReaderWriterFaultBuilder> nextAppenderMock = mock(ConfigurableNdcComponentAppender.class);
+        final ConfigurableNdcComponentAppender<CardReaderStatusInfoBuilder> nextAppenderMock = mock(ConfigurableNdcComponentAppender.class);
         appender = new CardReaderWriterErrorSeverityAppender("commandName", nextAppenderMock);
-        builder = new CardReaderWriterFaultBuilder();
+        builder = new CardReaderStatusInfoBuilder();
     }
 
     @DataProvider

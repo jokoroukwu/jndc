@@ -1,4 +1,4 @@
-package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader;
+package io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader;
 
 import io.github.jokoroukwu.jndc.NdcCharBuffer;
 import io.github.jokoroukwu.jndc.terminal.ConfigurableNdcComponentAppender;
@@ -10,19 +10,19 @@ import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedS
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusMessageBuilder;
 import io.github.jokoroukwu.jndc.util.ObjectUtils;
 
-public class UnsolicitedCardReaderWriterFaultAppender
+public class UnsolicitedCardReaderWriterStatusInfoAppender
         implements ConfigurableNdcComponentAppender<UnsolicitedStatusMessageBuilder<UnsolicitedStatusInformation>> {
 
-    private final UnsolicitedCardReaderWriterFaultMessageListener messageListener;
-    private final ConfigurableNdcComponentAppender<CardReaderWriterFaultBuilder> subFieldAppender;
+    private final UnsolicitedCardReaderWriterStatusInfoMessageListener messageListener;
+    private final ConfigurableNdcComponentAppender<CardReaderStatusInfoBuilder> subFieldAppender;
 
-    public UnsolicitedCardReaderWriterFaultAppender(UnsolicitedCardReaderWriterFaultMessageListener messageListener,
-                                                    ConfigurableNdcComponentAppender<CardReaderWriterFaultBuilder> subFieldAppender) {
+    public UnsolicitedCardReaderWriterStatusInfoAppender(UnsolicitedCardReaderWriterStatusInfoMessageListener messageListener,
+                                                         ConfigurableNdcComponentAppender<CardReaderStatusInfoBuilder> subFieldAppender) {
         this.messageListener = ObjectUtils.validateNotNull(messageListener, "messageListener");
         this.subFieldAppender = ObjectUtils.validateNotNull(subFieldAppender, "subFieldAppender");
     }
 
-    public UnsolicitedCardReaderWriterFaultAppender(UnsolicitedCardReaderWriterFaultMessageListener messageListener) {
+    public UnsolicitedCardReaderWriterStatusInfoAppender(UnsolicitedCardReaderWriterStatusInfoMessageListener messageListener) {
         this.messageListener = ObjectUtils.validateNotNull(messageListener, "messageListener");
         final CardReaderWriterAdditionalDataAppender additionalDataAppender
                 = new CardReaderWriterAdditionalDataAppender();
@@ -30,10 +30,10 @@ public class UnsolicitedCardReaderWriterFaultAppender
         final CardReaderWriterSuppliesStatusAppender suppliesStatusAppender
                 = new CardReaderWriterSuppliesStatusAppender(UnsolicitedStatusMessage.COMMAND_NAME, additionalDataAppender);
 
-        final CompletionDataAppender<CardReaderWriterFaultBuilder> completionDataAppender
+        final CompletionDataAppender<CardReaderStatusInfoBuilder> completionDataAppender
                 = new CompletionDataAppender<>(UnsolicitedStatusMessage.COMMAND_NAME, suppliesStatusAppender);
 
-        final DiagnosticStatusAppender<CardReaderWriterFaultBuilder> diagnosticStatusAppender
+        final DiagnosticStatusAppender<CardReaderStatusInfoBuilder> diagnosticStatusAppender
                 = new DiagnosticStatusAppender<>(UnsolicitedStatusMessage.COMMAND_NAME, completionDataAppender);
 
         final CardReaderWriterErrorSeverityAppender errorSeverityAppender
@@ -46,15 +46,15 @@ public class UnsolicitedCardReaderWriterFaultAppender
                                 UnsolicitedStatusMessageBuilder<UnsolicitedStatusInformation> stateObject,
                                 DeviceConfiguration deviceConfiguration) {
 
-        final CardReaderWriterFaultBuilder cardReaderWriterFaultBuilder = new CardReaderWriterFaultBuilder();
-        subFieldAppender.appendComponent(ndcCharBuffer, cardReaderWriterFaultBuilder, deviceConfiguration);
+        final CardReaderStatusInfoBuilder cardReaderStatusInfoBuilder = new CardReaderStatusInfoBuilder();
+        subFieldAppender.appendComponent(ndcCharBuffer, cardReaderStatusInfoBuilder, deviceConfiguration);
 
         final UnsolicitedStatusMessage<? extends UnsolicitedStatusInformation> message
-                = stateObject.withStatusInformation(cardReaderWriterFaultBuilder.build())
+                = stateObject.withStatusInformation(cardReaderStatusInfoBuilder.build())
                 .build();
-        @SuppressWarnings("unchecked") final UnsolicitedStatusMessage<CardReaderWriterFault> cardReaderWriterFaultMessage =
-                (UnsolicitedStatusMessage<CardReaderWriterFault>) message;
+        @SuppressWarnings("unchecked") final UnsolicitedStatusMessage<CardReaderWriterStatusInfo> cardReaderWriterFaultMessage =
+                (UnsolicitedStatusMessage<CardReaderWriterStatusInfo>) message;
 
-        messageListener.onUnsolicitedCardReaderWriterStatusMessage(cardReaderWriterFaultMessage);
+        messageListener.onUnsolicitedCardReaderWriterStatusInfoMessage(cardReaderWriterFaultMessage);
     }
 }

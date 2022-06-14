@@ -1,4 +1,4 @@
-package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader;
+package io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader;
 
 import io.github.jokoroukwu.jndc.terminal.completiondata.CompletionData;
 import io.github.jokoroukwu.jndc.terminal.completiondata.CompletionDataAcceptor;
@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class CardReaderWriterFaultBuilder implements CompletionDataAcceptor<CardReaderWriterFaultBuilder>,
-        DiagnosticStatusAcceptor<CardReaderWriterFaultBuilder> {
+public class CardReaderStatusInfoBuilder implements CompletionDataAcceptor<CardReaderStatusInfoBuilder>,
+        DiagnosticStatusAcceptor<CardReaderStatusInfoBuilder> {
     private TransactionDeviceStatus transactionDeviceStatus;
     private List<ErrorSeverity> errorSeverities = Collections.emptyList();
     private DiagnosticStatus diagnosticStatus;
@@ -21,40 +21,40 @@ public class CardReaderWriterFaultBuilder implements CompletionDataAcceptor<Card
     private SuppliesStatus suppliesStatus;
     private CardReaderWriterAdditionalData additionalData;
 
-    public CardReaderWriterFaultBuilder withTransactionDeviceStatus(TransactionDeviceStatus transactionDeviceStatus) {
+    public CardReaderStatusInfoBuilder withTransactionDeviceStatus(TransactionDeviceStatus transactionDeviceStatus) {
         this.transactionDeviceStatus = transactionDeviceStatus;
         return this;
     }
 
-    public CardReaderWriterFaultBuilder withErrorSeverities(List<ErrorSeverity> errorSeverities) {
+    public CardReaderStatusInfoBuilder withErrorSeverities(List<ErrorSeverity> errorSeverities) {
         this.errorSeverities = errorSeverities;
         return this;
     }
 
     @Override
-    public CardReaderWriterFaultBuilder withDiagnosticStatus(DiagnosticStatus diagnosticStatus) {
+    public CardReaderStatusInfoBuilder withDiagnosticStatus(DiagnosticStatus diagnosticStatus) {
         this.diagnosticStatus = diagnosticStatus;
         return this;
     }
 
     @Override
-    public CardReaderWriterFaultBuilder withCompletionData(CompletionData completionData) {
+    public CardReaderStatusInfoBuilder withCompletionData(CompletionData completionData) {
         this.completionData = completionData;
         return this;
     }
 
-    public CardReaderWriterFaultBuilder withSuppliesStatus(SuppliesStatus suppliesStatus) {
+    public CardReaderStatusInfoBuilder withSuppliesStatus(SuppliesStatus suppliesStatus) {
         this.suppliesStatus = suppliesStatus;
         return this;
     }
 
-    public CardReaderWriterFaultBuilder withAdditionalData(CardReaderWriterAdditionalData additionalData) {
+    public CardReaderStatusInfoBuilder withAdditionalData(CardReaderWriterAdditionalData additionalData) {
         this.additionalData = additionalData;
         return this;
     }
 
-    public CardReaderWriterFault build() {
-        return new CardReaderWriterFault(transactionDeviceStatus, errorSeverities, diagnosticStatus, completionData, suppliesStatus, additionalData);
+    public CardReaderWriterStatusInfo build() {
+        return new CardReaderWriterStatusInfo(transactionDeviceStatus, errorSeverities, diagnosticStatus, completionData, suppliesStatus, additionalData);
     }
 
     public TransactionDeviceStatus getTransactionDeviceStatus() {
@@ -79,7 +79,7 @@ public class CardReaderWriterFaultBuilder implements CompletionDataAcceptor<Card
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", CardReaderWriterFaultBuilder.class.getSimpleName() + ": {", "}")
+        return new StringJoiner(", ", CardReaderStatusInfoBuilder.class.getSimpleName() + ": {", "}")
                 .add("transactionDeviceStatus: " + transactionDeviceStatus)
                 .add("errorSeverities: " + errorSeverities)
                 .add("diagnosticStatus: " + diagnosticStatus)
@@ -93,7 +93,7 @@ public class CardReaderWriterFaultBuilder implements CompletionDataAcceptor<Card
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CardReaderWriterFaultBuilder that = (CardReaderWriterFaultBuilder) o;
+        CardReaderStatusInfoBuilder that = (CardReaderStatusInfoBuilder) o;
         return transactionDeviceStatus == that.transactionDeviceStatus &&
                 suppliesStatus == that.suppliesStatus &&
                 Objects.equals(errorSeverities, that.errorSeverities) &&

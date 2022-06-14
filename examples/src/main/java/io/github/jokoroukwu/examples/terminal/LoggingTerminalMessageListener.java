@@ -6,7 +6,7 @@ import io.github.jokoroukwu.jndc.terminal.encryptorinitializationdata.generic.Ge
 import io.github.jokoroukwu.jndc.terminal.encryptorinitializationdata.newkvv.NewKvv;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.SolicitedStatusInformation;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.SolicitedStatusMessage;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterFault;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderWriterStatusInfo;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.genericfault.GenericDeviceFault;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.generic.GenericSolicitedStatusInformation;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.readyb.ReadyBStatus;
@@ -38,7 +38,7 @@ public class LoggingTerminalMessageListener implements TerminalMessageListener {
     }
 
     @Override
-    public void onSolicitedCardReaderWriterFaultMessage(SolicitedStatusMessage<CardReaderWriterFault> message) {
+    public void onSolicitedCardReaderWriterStatusInfoMessage(SolicitedStatusMessage<CardReaderWriterStatusInfo> message) {
         LOGGER.info("Card Reader/ Writer Solicited Fault message received: {}", message);
     }
 
@@ -78,7 +78,7 @@ public class LoggingTerminalMessageListener implements TerminalMessageListener {
     }
 
     @Override
-    public void onUnsolicitedCardReaderWriterStatusMessage(UnsolicitedStatusMessage<CardReaderWriterFault> message) {
+    public void onUnsolicitedCardReaderWriterStatusInfoMessage(UnsolicitedStatusMessage<CardReaderWriterStatusInfo> message) {
         LOGGER.info("Card Reader/ Writer Unsolicited Fault message received: {}", message);
     }
 

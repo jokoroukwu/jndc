@@ -1,4 +1,4 @@
-package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader;
+package io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader;
 
 import io.github.jokoroukwu.jndc.NdcComponent;
 import io.github.jokoroukwu.jndc.util.optional.DescriptiveOptional;

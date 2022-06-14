@@ -3,11 +3,11 @@ package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreaderw
 import io.github.jokoroukwu.jndc.terminal.completiondata.CompletionData;
 import io.github.jokoroukwu.jndc.terminal.dig.Dig;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.DeviceStatusInformationTest;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderStatusInfoBuilder;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderWriterStatusInfo;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.TransactionDeviceStatus;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.ErrorSeverity;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.SuppliesStatus;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterFault;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterFaultBuilder;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.TransactionDeviceStatus;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.diagnosticstatus.DiagnosticStatus;
 import io.github.jokoroukwu.jndc.util.NdcConstants;
 import io.github.jokoroukwu.jndc.util.text.stringgenerator.BmpStringGenerator;
@@ -17,7 +17,7 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-public class CardReaderWriterFaultTest extends DeviceStatusInformationTest {
+public class CardReaderWriterStatusInfoTest extends DeviceStatusInformationTest {
     private final Dig dig = Dig.MAGNETIC_CARD_READER_WRITER;
 
     private final ErrorSeverity dummyErrorSeverity = ErrorSeverity.NO_ERROR;
@@ -74,7 +74,7 @@ public class CardReaderWriterFaultTest extends DeviceStatusInformationTest {
                                                   DiagnosticStatus diagnosticStatus,
                                                   CompletionData completionData,
                                                   SuppliesStatus suppliesStatuses) {
-        final CardReaderWriterFault cardReaderWriterFault = new CardReaderWriterFaultBuilder()
+        final CardReaderWriterStatusInfo cardReaderWriterStatusInfo = new CardReaderStatusInfoBuilder()
                 .withTransactionDeviceStatus(transactionStatus)
                 .withErrorSeverities(errorSeverities)
                 .withDiagnosticStatus(diagnosticStatus)
@@ -82,7 +82,7 @@ public class CardReaderWriterFaultTest extends DeviceStatusInformationTest {
                 .withSuppliesStatus(suppliesStatuses)
                 .build();
 
-        Assertions.assertThat(cardReaderWriterFault.toNdcString())
+        Assertions.assertThat(cardReaderWriterStatusInfo.toNdcString())
                 .isEqualTo(expectedString);
     }
 }

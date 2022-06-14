@@ -9,7 +9,7 @@ import io.github.jokoroukwu.jndc.terminal.DeviceConfigurationSupplier;
 import io.github.jokoroukwu.jndc.terminal.TerminalMessageListener;
 import io.github.jokoroukwu.jndc.terminal.dig.Dig;
 import io.github.jokoroukwu.jndc.terminal.meta.TerminalMessageMeta;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.UnsolicitedCardReaderWriterFaultAppender;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.UnsolicitedCardReaderWriterStatusInfoAppender;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.genericfault.UnsolicitedGenericDeviceFaultAppender;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.genericfault.UnsolicitedGenericDeviceFaultMessageListener;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.UnsolicitedStatusInformation;
@@ -45,7 +45,7 @@ public class UnsolicitedStatusMessageAppender implements NdcComponentAppender<Te
 
         final Map<Dig, ConfigurableNdcComponentAppender<UnsolicitedStatusMessageBuilder<UnsolicitedStatusInformation>>> appenderMap
                 = new EnumMap<>(Dig.class);
-        appenderMap.put(Dig.MAGNETIC_CARD_READER_WRITER, new UnsolicitedCardReaderWriterFaultAppender(messageListener));
+        appenderMap.put(Dig.MAGNETIC_CARD_READER_WRITER, new UnsolicitedCardReaderWriterStatusInfoAppender(messageListener));
         appenderMap.put(Dig.TIME_OF_DAY_CLOCK, new TimeOfDayClockMessageAppender(messageListener));
         appenderMap.put(Dig.COMMUNICATIONS, new PowerFailureMessageAppender(messageListener));
         putGenericAppenders(appenderMap, messageListener);

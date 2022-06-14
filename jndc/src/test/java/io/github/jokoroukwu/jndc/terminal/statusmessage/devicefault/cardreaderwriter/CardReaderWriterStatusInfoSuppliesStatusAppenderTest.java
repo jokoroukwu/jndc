@@ -3,9 +3,9 @@ package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreaderw
 import io.github.jokoroukwu.jndc.NdcCharBuffer;
 import io.github.jokoroukwu.jndc.terminal.ConfigurableNdcComponentAppender;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.DeviceStatusInformationTest;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderStatusInfoBuilder;
+import io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader.CardReaderWriterSuppliesStatusAppender;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.SuppliesStatus;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterFaultBuilder;
-import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader.CardReaderWriterSuppliesStatusAppender;
 import io.github.jokoroukwu.jndc.util.NdcConstants;
 import io.github.jokoroukwu.jndc.util.text.stringgenerator.BmpStringGenerator;
 import org.assertj.core.api.Assertions;
@@ -16,8 +16,8 @@ import org.testng.annotations.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CardReaderWriterFaultSuppliesStatusAppenderTest extends DeviceStatusInformationTest {
-    private CardReaderWriterFaultBuilder builder;
+public class CardReaderWriterStatusInfoSuppliesStatusAppenderTest extends DeviceStatusInformationTest {
+    private CardReaderStatusInfoBuilder builder;
     private CardReaderWriterSuppliesStatusAppender appender;
 
 
@@ -26,7 +26,7 @@ public class CardReaderWriterFaultSuppliesStatusAppenderTest extends DeviceStatu
     public void setUp() {
         nextAppenderMock = mock(ConfigurableNdcComponentAppender.class);
         appender = new CardReaderWriterSuppliesStatusAppender("commandName");
-        builder = new CardReaderWriterFaultBuilder();
+        builder = new CardReaderStatusInfoBuilder();
     }
 
     @DataProvider

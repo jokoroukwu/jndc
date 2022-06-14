@@ -1,4 +1,4 @@
-package io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.cardreader;
+package io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader;
 
 import io.github.jokoroukwu.jndc.NdcCharBuffer;
 import io.github.jokoroukwu.jndc.NdcComponentReader;
@@ -12,7 +12,7 @@ import io.github.jokoroukwu.jndc.util.optional.DescriptiveOptional;
 
 import static io.github.jokoroukwu.jndc.exception.NdcMessageParseException.withMessage;
 
-public class CardReaderWriterAdditionalDataAppender implements ConfigurableNdcComponentAppender<CardReaderWriterFaultBuilder> {
+public class CardReaderWriterAdditionalDataAppender implements ConfigurableNdcComponentAppender<CardReaderStatusInfoBuilder> {
     private final NdcComponentReader<DescriptiveOptional<String>> track1DataReader;
     private final NdcComponentReader<DescriptiveOptional<String>> track2DataReader;
     private final NdcComponentReader<DescriptiveOptional<String>> track3DataReader;
@@ -32,7 +32,7 @@ public class CardReaderWriterAdditionalDataAppender implements ConfigurableNdcCo
     }
 
     @Override
-    public void appendComponent(NdcCharBuffer ndcCharBuffer, CardReaderWriterFaultBuilder stateObject, DeviceConfiguration deviceConfiguration) {
+    public void appendComponent(NdcCharBuffer ndcCharBuffer, CardReaderStatusInfoBuilder stateObject, DeviceConfiguration deviceConfiguration) {
         if (ndcCharBuffer.hasRemaining()) {
             ndcCharBuffer.trySkipFieldSeparator()
                     .ifPresent(errorMessage
