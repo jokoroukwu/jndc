@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class TimeOfDayClockIntegrationTest implements TerminalMessageListener, DeviceConfigurationSupplier<TerminalMessageMeta> {
     private final TerminalMessagePreProcessor messagePreProcessor = new TerminalMessagePreProcessor(this, this);
-    private final String rawMessage = "12\u001C324123456\u001C\u001CA24";
+    private final String rawMessage = "12\u001C324123456\u001C\u001CA2\u001C4";
     private UnsolicitedStatusMessage<TimeOfDayClock> message;
     private NdcCharBuffer buffer;
 
