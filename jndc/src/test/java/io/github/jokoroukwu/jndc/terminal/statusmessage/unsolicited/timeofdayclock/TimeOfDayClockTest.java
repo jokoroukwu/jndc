@@ -2,6 +2,7 @@ package io.github.jokoroukwu.jndc.terminal.statusmessage.unsolicited.timeofdaycl
 
 import io.github.jokoroukwu.jndc.terminal.dig.Dig;
 import io.github.jokoroukwu.jndc.terminal.statusmessage.devicefault.ErrorSeverity;
+import io.github.jokoroukwu.jndc.util.NdcConstants;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -29,7 +30,10 @@ public class TimeOfDayClockTest {
     @Test
     public void should_return_expected_ndc_string() {
         final String actualNdcString = new TimeOfDayClock(ClockDeviceStatus.STOPPED, ErrorSeverity.FATAL).toNdcString();
-        final String expectedNdcString = Dig.TIME_OF_DAY_CLOCK.getValue() + "2" + ErrorSeverity.FATAL.getValue();
+        final String expectedNdcString = Dig.TIME_OF_DAY_CLOCK.getValue()
+                + "2"
+                + NdcConstants.FIELD_SEPARATOR
+                + ErrorSeverity.FATAL.getValue();
 
         Assertions.assertThat(actualNdcString)
                 .isEqualTo(expectedNdcString);

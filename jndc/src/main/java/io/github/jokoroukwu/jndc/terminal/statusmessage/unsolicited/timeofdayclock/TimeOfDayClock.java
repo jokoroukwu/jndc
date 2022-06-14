@@ -43,6 +43,7 @@ public class TimeOfDayClock implements DeviceStatusInformation, UnsolicitedStatu
         return new NdcStringBuilder(3)
                 .appendComponent(Dig.TIME_OF_DAY_CLOCK)
                 .appendComponent(deviceStatus)
+                .appendFs()
                 .appendComponent(errorSeverity)
                 .toString();
     }
