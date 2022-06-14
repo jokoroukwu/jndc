@@ -24,7 +24,7 @@ public class CardReaderWriterTransactionStatusAppender extends DeviceFaultFieldA
     public void appendComponent(NdcCharBuffer ndcCharBuffer, CardReaderStatusInfoBuilder stateObject, DeviceConfiguration deviceConfiguration) {
         if (ndcCharBuffer.hasFieldDataRemaining()) {
             ndcCharBuffer.tryReadNextChar()
-                    .flatMapToObject(TransactionDeviceStatus::forValue)
+                    .flatMapToObject(CardReaderWriterStatus::forValue)
                     .resolve(stateObject::withTransactionDeviceStatus, errorMessage
                             -> NdcMessageParseException.onFieldParseError(commandName, "'Transaction/Device Status'", errorMessage, ndcCharBuffer));
         }

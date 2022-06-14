@@ -3,7 +3,7 @@ package io.github.jokoroukwu.jndc.terminal.statusmessage.cardreader;
 import io.github.jokoroukwu.jndc.NdcComponent;
 import io.github.jokoroukwu.jndc.util.optional.DescriptiveOptional;
 
-public enum TransactionDeviceStatus implements NdcComponent {
+public enum CardReaderWriterStatus implements NdcComponent {
     NO_EXCEPTION('0', "No Exception ('0')"),
     CARD_WITHDRAWAL_TIMEOUT('1', "Card Withdrawal Timeout ('1')"),
     CARD_EJECT_FAILURE('2', "Card Eject Failure ('2')"),
@@ -14,12 +14,12 @@ public enum TransactionDeviceStatus implements NdcComponent {
     private final char value;
     private final String displayedName;
 
-    TransactionDeviceStatus(char value, String displayedName) {
+    CardReaderWriterStatus(char value, String displayedName) {
         this.value = value;
         this.displayedName = displayedName;
     }
 
-    public static DescriptiveOptional<TransactionDeviceStatus> forValue(char value) {
+    public static DescriptiveOptional<CardReaderWriterStatus> forValue(char value) {
         switch (value) {
             case '0':
                 return DescriptiveOptional.of(NO_EXCEPTION);
@@ -40,7 +40,7 @@ public enum TransactionDeviceStatus implements NdcComponent {
         }
     }
 
-    public static DescriptiveOptional<TransactionDeviceStatus> forValue(int value) {
+    public static DescriptiveOptional<CardReaderWriterStatus> forValue(int value) {
         return forValue((char) value);
     }
 

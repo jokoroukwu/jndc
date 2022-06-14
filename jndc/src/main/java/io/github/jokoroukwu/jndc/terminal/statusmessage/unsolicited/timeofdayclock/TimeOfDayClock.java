@@ -17,20 +17,20 @@ public class TimeOfDayClock implements DeviceStatusInformation, UnsolicitedStatu
             + ": " + TerminalMessageSubClass.STATUS_MESSAGE
             + ": " + Dig.TIME_OF_DAY_CLOCK;
 
-    private final ClockDeviceStatus deviceStatus;
+    private final ClockStatus deviceStatus;
     private final ErrorSeverity errorSeverity;
 
-    public TimeOfDayClock(ClockDeviceStatus deviceStatus, ErrorSeverity errorSeverity) {
+    public TimeOfDayClock(ClockStatus deviceStatus, ErrorSeverity errorSeverity) {
         this.deviceStatus = ObjectUtils.validateNotNull(deviceStatus, "'Device Status'");
         this.errorSeverity = validateErrorSeverity(errorSeverity);
     }
 
-    TimeOfDayClock(ClockDeviceStatus deviceStatus, ErrorSeverity errorSeverity, Void unused) {
+    TimeOfDayClock(ClockStatus deviceStatus, ErrorSeverity errorSeverity, Void unused) {
         this.deviceStatus = deviceStatus;
         this.errorSeverity = errorSeverity;
     }
 
-    public ClockDeviceStatus getDeviceStatus() {
+    public ClockStatus getDeviceStatus() {
         return deviceStatus;
     }
 

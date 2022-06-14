@@ -32,14 +32,14 @@ public class TimeOfDayClockMessageAppender implements ConfigurableNdcComponentAp
                                 UnsolicitedStatusMessageBuilder<UnsolicitedStatusInformation> stateObject,
                                 DeviceConfiguration deviceConfiguration) {
 
-        final ClockDeviceStatus clockDeviceStatus = readDeviceStatus(ndcCharBuffer);
+        final ClockStatus clockStatus = readDeviceStatus(ndcCharBuffer);
         final ErrorSeverity errorSeverity = readErrorSeverity(ndcCharBuffer);
 
         trailingDataChecker.getErrorMessageOnTrailingData(ndcCharBuffer)
                 .ifPresent(errorMessage -> onMessageParseError(COMMAND_NAME, errorMessage, ndcCharBuffer));
 
         final UnsolicitedStatusMessageBuilder<? extends UnsolicitedStatusInformation> builder = stateObject
-                .withStatusInformation(new TimeOfDayClock(clockDeviceStatus, errorSeverity, null));
+                .withStatusInformation(new TimeOfDayClock(clockStatus, errorSeverity, null));
 
         @SuppressWarnings("unchecked") final UnsolicitedStatusMessage<TimeOfDayClock> timeOfDayClockFailureMessage
                 = (UnsolicitedStatusMessage<TimeOfDayClock>) builder.build();
@@ -47,9 +47,9 @@ public class TimeOfDayClockMessageAppender implements ConfigurableNdcComponentAp
         messageListener.onTimeOfDayClockStatusMessage(timeOfDayClockFailureMessage);
     }
 
-    private ClockDeviceStatus readDeviceStatus(NdcCharBuffer ndcCharBuffer) {
+    private ClockStatus readDeviceStatus(NdcCharBuffer ndcCharBuffer) {
         return ndcCharBuffer.tryReadNextChar()
-                .flatMapToObject(ClockDeviceStatus::forValue)
+                .flatMapToObject(ClockStatus::forValue)
                 .getOrThrow(errorMessage -> withMessage(COMMAND_NAME, "'Device Status'", errorMessage, ndcCharBuffer));
     }
 

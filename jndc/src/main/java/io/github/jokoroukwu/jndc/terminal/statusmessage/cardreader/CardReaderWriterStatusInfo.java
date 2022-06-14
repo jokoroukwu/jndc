@@ -14,33 +14,33 @@ import io.github.jokoroukwu.jndc.util.NdcStringBuilder;
 import java.util.*;
 
 public class CardReaderWriterStatusInfo implements DeviceStatusInformation, SolicitedStatusInformation, UnsolicitedStatusInformation {
-    private final TransactionDeviceStatus transactionDeviceStatus;
+    private final CardReaderWriterStatus transactionDeviceStatus;
     private final List<ErrorSeverity> errorSeverities;
     private final DiagnosticStatus diagnosticStatus;
     private final CompletionData completionData;
     private final SuppliesStatus suppliesStatus;
     private final CardReaderWriterAdditionalData additionalData;
 
-    public CardReaderWriterStatusInfo(TransactionDeviceStatus transactionDeviceStatus,
+    public CardReaderWriterStatusInfo(CardReaderWriterStatus cardReaderWriterStatus,
                                       Collection<ErrorSeverity> errorSeverities,
                                       DiagnosticStatus diagnosticStatus,
                                       CompletionData completionData,
                                       SuppliesStatus suppliesStatus,
                                       CardReaderWriterAdditionalData additionalData) {
         this.errorSeverities = List.copyOf(errorSeverities);
-        this.transactionDeviceStatus = transactionDeviceStatus;
+        this.transactionDeviceStatus = cardReaderWriterStatus;
         this.diagnosticStatus = diagnosticStatus;
         this.completionData = completionData;
         this.suppliesStatus = suppliesStatus;
         this.additionalData = additionalData;
     }
 
-    public CardReaderWriterStatusInfo(TransactionDeviceStatus transactionDeviceStatus,
+    public CardReaderWriterStatusInfo(CardReaderWriterStatus cardReaderWriterStatus,
                                       Collection<ErrorSeverity> errorSeverities,
                                       DiagnosticStatus diagnosticStatus,
                                       CompletionData completionData,
                                       SuppliesStatus suppliesStatus) {
-        this(transactionDeviceStatus, errorSeverities, diagnosticStatus, completionData, suppliesStatus, null);
+        this(cardReaderWriterStatus, errorSeverities, diagnosticStatus, completionData, suppliesStatus, null);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class CardReaderWriterStatusInfo implements DeviceStatusInformation, Soli
         return Dig.MAGNETIC_CARD_READER_WRITER;
     }
 
-    public Optional<TransactionDeviceStatus> getTransactionDeviceStatus() {
+    public Optional<CardReaderWriterStatus> getTransactionDeviceStatus() {
         return Optional.ofNullable(transactionDeviceStatus);
     }
 

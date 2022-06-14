@@ -14,14 +14,14 @@ import java.util.StringJoiner;
 
 public class CardReaderStatusInfoBuilder implements CompletionDataAcceptor<CardReaderStatusInfoBuilder>,
         DiagnosticStatusAcceptor<CardReaderStatusInfoBuilder> {
-    private TransactionDeviceStatus transactionDeviceStatus;
+    private CardReaderWriterStatus transactionDeviceStatus;
     private List<ErrorSeverity> errorSeverities = Collections.emptyList();
     private DiagnosticStatus diagnosticStatus;
     private CompletionData completionData;
     private SuppliesStatus suppliesStatus;
     private CardReaderWriterAdditionalData additionalData;
 
-    public CardReaderStatusInfoBuilder withTransactionDeviceStatus(TransactionDeviceStatus transactionDeviceStatus) {
+    public CardReaderStatusInfoBuilder withTransactionDeviceStatus(CardReaderWriterStatus transactionDeviceStatus) {
         this.transactionDeviceStatus = transactionDeviceStatus;
         return this;
     }
@@ -57,7 +57,7 @@ public class CardReaderStatusInfoBuilder implements CompletionDataAcceptor<CardR
         return new CardReaderWriterStatusInfo(transactionDeviceStatus, errorSeverities, diagnosticStatus, completionData, suppliesStatus, additionalData);
     }
 
-    public TransactionDeviceStatus getTransactionDeviceStatus() {
+    public CardReaderWriterStatus getTransactionDeviceStatus() {
         return transactionDeviceStatus;
     }
 
